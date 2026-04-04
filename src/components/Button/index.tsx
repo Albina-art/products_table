@@ -8,12 +8,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles = {
   primary: css`
-    background: ${({ theme }) => theme.colors.blue[600]};
+    background: ${({ theme }) => theme.colors.primary.DEFAULT};
     color: #fff;
-    border-color: ${({ theme }) => theme.colors.blue[600]};
+    border-color: ${({ theme }) => theme.colors.primary.light};
     &:hover:not(:disabled) {
-      background: ${({ theme }) => theme.colors.blue[700]};
-      border-color: ${({ theme }) => theme.colors.blue[700]};
+      background: ${({ theme }) => theme.colors.primary.light};
+      border-color: ${({ theme }) => theme.colors.primary.light};
     }
   `,
   secondary: css`

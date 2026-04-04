@@ -1,36 +1,31 @@
 import { useMemo, useState } from 'react';
-import styled from 'styled-components';
 
+import { IconChevronLeft, IconChevronRight } from '@/components/icons';
 import { Modal } from '@/components/Modal';
 import { useToast } from '@/features/ui/useToast';
 import type { Product } from '@/types/product';
 
 import { ProductForm } from './ProductForm';
 import { ProductItem } from './ProductItem';
+import {
+  Checkbox,
+  ErrorText,
+  FetchingBar,
+  PageBtn,
+  PageInfo,
+  PageNav,
+  PageNum,
+  Pagination,
+  SortArrow,
+  SortBtn,
+  StyledTable,
+  TableWrap,
+  Th,
+  TheadRow,
+} from './ProductTable.styles';
 import { ProductTableSkeleton } from './ProductTableSkeleton';
 import { useProductsQuery } from './useProductsQuery';
 import { useProductStore } from './useProductStore';
-
-const SortBtn = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  border: none;
-  background: none;
-  padding: 0;
-  font: inherit;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.grey[700]};
-  cursor: pointer;
-  transition: color 0.15s;
-  &:hover {
-    color: ${({ theme }) => theme.colors.blue[600]};
-  }
-`;
-
-const SortArrow = styled.span`
-  color: ${({ theme }) => theme.colors.blue[600]};
-`;
 
 function SortHeader({
   colKey,
@@ -48,114 +43,10 @@ function SortHeader({
   return (
     <SortBtn type="button" onClick={() => onSort(colKey as keyof Product)}>
       {label}
-      {sortKey === colKey && (
-        <SortArrow>{sortOrder === 'asc' ? ' ↑' : ' ↓'}</SortArrow>
-      )}
+      {sortKey === colKey && <SortArrow>{sortOrder === 'asc' ? ' ↑' : ' ↓'}</SortArrow>}
     </SortBtn>
   );
 }
-
-const TableWrap = styled.div`
-  position: relative;
-  background: #fff;
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
-  overflow: hidden;
-`;
-
-const FetchingBar = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: ${({ theme }) => theme.colors.grey[100]};
-  overflow: hidden;
-  border-radius: ${({ theme }) => theme.borderRadius.lg} ${({ theme }) => theme.borderRadius.lg} 0 0;
-  z-index: 10;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  font-family: ${({ theme }) => theme.fonts.robotoMono};
-`;
-
-const Th = styled.th<{ $narrow?: boolean }>`
-  padding: 0.75rem 1rem;
-  text-align: left;
-  font-weight: inherit;
-  width: ${({ $narrow }) => ($narrow ? '3rem' : 'auto')};
-`;
-
-const TheadRow = styled.tr`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
-  background: rgba(249, 250, 251, 0.5);
-`;
-
-const Checkbox = styled.input`
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  border-color: ${({ theme }) => theme.colors.grey[300]};
-`;
-
-const ErrorText = styled.p`
-  padding: 2rem 0;
-  color: ${({ theme }) => theme.colors.red[600]};
-`;
-
-const Pagination = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.grey[200]};
-  background: rgba(249, 250, 251, 0.3);
-`;
-
-const PageInfo = styled.span`
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  color: ${({ theme }) => theme.colors.grey[600]};
-`;
-
-const PageNav = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-`;
-
-const PageBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border: none;
-  background: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
-  color: inherit;
-  &:hover:not(:disabled) {
-    background: ${({ theme }) => theme.colors.grey[200]};
-  }
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const PageNum = styled.button<{ $active?: boolean }>`
-  min-width: 2rem;
-  height: 2rem;
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  font-weight: 500;
-  cursor: pointer;
-  background: ${({ theme, $active }) => ($active ? theme.colors.blue[600] : 'transparent')};
-  color: ${({ theme, $active }) => ($active ? '#fff' : theme.colors.grey[600])};
-  &:hover {
-    background: ${({ theme, $active }) => ($active ? theme.colors.blue[600] : theme.colors.grey[200])};
-  }
-`;
 
 export function ProductTable() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -201,9 +92,7 @@ export function ProductTable() {
   };
 
   const rawProducts = useMemo(() => {
-    const apiProducts = (data?.products ?? []).map(
-      (p) => updatedProducts[p.id] ?? p
-    );
+    const apiProducts = (data?.products ?? []).map((p) => updatedProducts[p.id] ?? p);
     if (page === 1 && addedProducts.length > 0) {
       return [...addedProducts, ...apiProducts].slice(0, limit);
     }
@@ -326,9 +215,7 @@ export function ProductTable() {
         </PageInfo>
         <PageNav>
           <PageBtn type="button" disabled={page <= 1} onClick={() => setPage(page - 1)}>
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <IconChevronLeft />
           </PageBtn>
           {Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + 1).map((p) => (
             <PageNum key={p} type="button" $active={p === page} onClick={() => setPage(p)}>
@@ -340,9 +227,7 @@ export function ProductTable() {
             disabled={page >= totalPages}
             onClick={() => setPage(page + 1)}
           >
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <IconChevronRight />
           </PageBtn>
         </PageNav>
       </Pagination>

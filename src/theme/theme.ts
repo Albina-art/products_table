@@ -2,7 +2,7 @@ export const theme = {
   colors: {
     primary: {
       DEFAULT: '#242EDB',
-      light: '#797FEA',
+      light: '#367AFF',
       deep: '#3C538E',
       dark: '#202020',
       darker: '#161919',
@@ -26,6 +26,7 @@ export const theme = {
     },
     blue: {
       50: '#eff6ff',
+      100: '#367AFF',
       500: '#3b82f6',
       600: '#2563eb',
       700: '#1d4ed8',
@@ -67,6 +68,7 @@ export const theme = {
     md: '12px',
     lg: '23px',
     xl: '40px',
+    full: '9999px',
   },
 } as const;
 

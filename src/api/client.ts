@@ -27,8 +27,21 @@ async function request<T>(endpoint: string, config: RequestConfig = {}): Promise
 
   const response = await fetch(url.toString(), { ...init, headers });
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(error.message ?? 'Request failed');
+    const errorBody = await response.json().catch(() => null);
+    let message = 'Не удалось выполнить запрос';
+
+    if (errorBody && typeof errorBody === 'object' && 'message' in errorBody) {
+      const errMessage = (errorBody as { message: unknown }).message;
+      if (typeof errMessage === 'string') {
+        message = errMessage;
+      } else if (Array.isArray(errMessage)) {
+        message = errMessage.map(String).join(', ');
+      }
+    } else if (response.statusText) {
+      message = response.statusText;
+    }
+
+    throw new Error(message);
   }
   return response.json();
 }

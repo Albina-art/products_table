@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export interface ToastItem {
   id: string;
@@ -23,18 +23,6 @@ const Wrap = styled.div`
   max-width: 420px;
 `;
 
-const typeBorder = {
-  success: css`
-    border-left: 4px solid ${({ theme }) => theme.colors.green[500]};
-  `,
-  error: css`
-    border-left: 4px solid ${({ theme }) => theme.colors.red[500]};
-  `,
-  info: css`
-    border-left: 4px solid ${({ theme }) => theme.colors.blue[500]};
-  `,
-};
-
 const ToastBox = styled.div<{ $type: 'success' | 'error' | 'info' }>`
   display: flex;
   align-items: center;
@@ -44,7 +32,16 @@ const ToastBox = styled.div<{ $type: 'success' | 'error' | 'info' }>`
   background: #fff;
   padding: 0.75rem 1rem;
   box-shadow: ${({ theme }) => theme.shadow.lg};
-  ${({ $type }) => typeBorder[$type]}
+  border-left: 4px solid ${({ theme, $type }) => {
+    switch ($type) {
+      case 'success':
+        return theme.colors.green[500];
+      case 'error':
+        return theme.colors.red[500];
+      case 'info':
+        return theme.colors.blue[500];
+    }
+  }};
 `;
 
 const Message = styled.span`
@@ -55,11 +52,10 @@ const Message = styled.span`
 const CloseBtn = styled.button`
   border: none;
   background: none;
-  padding: 0.25rem;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  padding: 0.5rem;
   color: ${({ theme }) => theme.colors.grey[400]};
   cursor: pointer;
-  font-size: 1.125rem;
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   line-height: 1;
   &:hover {
     background: ${({ theme }) => theme.colors.grey[100]};

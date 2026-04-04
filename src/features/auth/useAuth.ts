@@ -3,6 +3,10 @@ import { create } from 'zustand';
 import { authApi } from '@/api/auth';
 import type { AuthCredentials } from '@/types/auth';
 
+import { translateAuthError } from './translateAuthError';
+
+const AUTH_TOKEN_KEY = 'auth_token';
+
 interface AuthState {
   token: string | null;
   isLoading: boolean;
@@ -13,8 +17,18 @@ interface AuthState {
 }
 
 const getStoredToken = (): string | null => {
-  return localStorage.getItem('auth_token') ?? sessionStorage.getItem('auth_token');
+  return localStorage.getItem(AUTH_TOKEN_KEY) ?? sessionStorage.getItem(AUTH_TOKEN_KEY);
 };
+
+function persistAuthToken(token: string, remember: boolean) {
+  if (remember) {
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    sessionStorage.removeItem(AUTH_TOKEN_KEY);
+  } else {
+    sessionStorage.setItem(AUTH_TOKEN_KEY, token);
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+  }
+}
 
 export const useAuth = create<AuthState>((set) => ({
   token: getStoredToken(),
@@ -26,19 +40,19 @@ export const useAuth = create<AuthState>((set) => ({
     try {
       const res = await authApi.login(credentials);
       const token = res.accessToken;
-      const storage = remember ? localStorage : sessionStorage;
-      storage.setItem('auth_token', token);
+      persistAuthToken(token, remember);
       set({ token, isLoading: false, error: null });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Ошибка авторизации';
+      const raw = err instanceof Error ? err.message : 'Ошибка авторизации';
+      const message = translateAuthError(raw);
       set({ error: message, isLoading: false });
-      throw err;
+      throw new Error(message);
     }
   },
 
   logout: () => {
-    localStorage.removeItem('auth_token');
-    sessionStorage.removeItem('auth_token');
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    sessionStorage.removeItem(AUTH_TOKEN_KEY);
     set({ token: null });
   },
 
