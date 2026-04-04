@@ -16,8 +16,8 @@
 <path d="M39.844 43.98C40.7178 43.98 41.426 36.8255 41.426 28C41.426 19.1745 40.7178 12.02 39.844 12.02C38.9703 12.02 38.262 19.1745 38.262 28C38.262 36.8255 38.9703 43.98 39.844 43.98Z" fill="black"/>
 </g>
 <defs>
-<filter id="filter0_d_1046_53" x="0" y="0" width="56" height="56" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<filter id="filter0_d_1046_53" x="0" y="0" width="56" height="56" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<feFlood floodOpacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feMorphology radius="2" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_1046_53"/>
 <feOffset/>

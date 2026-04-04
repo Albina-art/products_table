@@ -1,4 +1,12 @@
+const fontWeight = {
+  regular: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+} as const;
+
 export const theme = {
+  fontWeight,
   colors: {
     primary: {
       DEFAULT: '#242EDB',
@@ -9,6 +17,8 @@ export const theme = {
     },
     grey: {
       25: '#F9F9F9',
+      28: '#F6F6F6',
+      30: '#F3F3F3',
       50: '#ECECEB',
       100: '#EDEDED',
       200: '#E0E0E0',
@@ -41,16 +51,17 @@ export const theme = {
     },
   },
   fonts: {
+    cairo: 'Cairo, "Open Sans", system-ui, sans-serif',
     sans: '"Open Sans", system-ui, sans-serif',
     inter: 'Inter, "Open Sans", system-ui, sans-serif',
     roboto: 'Roboto, "Open Sans", system-ui, sans-serif',
     robotoMono: '"Roboto Mono", ui-monospace, monospace',
   },
   typography: {
-    display: { fontSize: '40px', lineHeight: '110%', fontWeight: 600 },
-    title: { fontSize: '24px', lineHeight: '120%' },
+    display: { fontSize: '40px', lineHeight: '110%', fontWeight: fontWeight.semibold },
+    title: { fontSize: '24px', lineHeight: '120%', fontWeight: fontWeight.bold },
     subtitle: { fontSize: '20px', lineHeight: '120%' },
-    lead: { fontSize: '18px', lineHeight: '150%', fontWeight: 500 },
+    lead: { fontSize: '18px', lineHeight: '150%', fontWeight: fontWeight.medium },
     body: { fontSize: '16px', lineHeight: '150%' },
     bodySm: { fontSize: '14px', lineHeight: '150%' },
     caption: { fontSize: '14px', lineHeight: '120%' },
@@ -63,6 +74,7 @@ export const theme = {
     xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   },
   borderRadius: {
+    xxs: '4px',
     xs: '6px',
     sm: '8px',
     md: '12px',

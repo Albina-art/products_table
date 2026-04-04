@@ -24,7 +24,7 @@ export const TdSm = styled(Td)`
 `;
 
 export const TitleCell = styled.div`
-  font-weight: 500;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.grey[900]};
 `;
 
@@ -34,14 +34,11 @@ export const Category = styled.div`
   color: ${({ theme }) => theme.colors.grey[500]};
 `;
 
-export const Checkbox = styled.input`
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  border-color: ${({ theme }) => theme.colors.grey[300]};
-`;
+export { Checkbox } from './ProductCheckbox.styles';
 
 export const Rating = styled.span<{ $low?: boolean }>`
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  font-weight: ${({ $low }) => ($low ? 500 : 400)};
+  font-weight: ${({ $low, theme }) => ($low ? theme.fontWeight.medium : theme.fontWeight.regular)};
   color: ${({ theme, $low }) => ($low ? theme.colors.red[600] : theme.colors.grey[600])};
 `;
 

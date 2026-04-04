@@ -39,7 +39,7 @@ const Header = styled.div`
 const Title = styled(Dialog.Title)`
   margin: 0;
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 const CloseBtn = styled.button`

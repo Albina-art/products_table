@@ -4,21 +4,7 @@ import { IconDotsVertical, IconPlus } from '@/components/icons';
 import type { Product } from '@/types/product';
 import { formatPrice } from '@/utils';
 
-import {
-  Actions,
-  Category,
-  Checkbox,
-  DropdownContent,
-  IconBtn,
-  MenuBtn,
-  MenuItem,
-  MenuItemDanger,
-  Rating,
-  Row,
-  Td,
-  TdSm,
-  TitleCell,
-} from './ProductItem.styles';
+import * as S from './ProductItem.styles';
 
 interface ProductItemProps {
   product: Product;
@@ -38,49 +24,45 @@ export function ProductItem({
   onRemove,
 }: ProductItemProps) {
   return (
-    <Row $selected={isSelected}>
-      <Td>
-        <Checkbox
-          type="checkbox"
-          checked={isSelected}
-          onChange={() => onToggleSelect(product.id)}
-        />
-      </Td>
-      <Td>
+    <S.Row $selected={isSelected}>
+      <S.Td>
+        <S.Checkbox checked={isSelected} onChange={() => onToggleSelect(product.id)} />
+      </S.Td>
+      <S.Td>
         <div>
-          <TitleCell>{product.title}</TitleCell>
-          {product.category && <Category>{product.category}</Category>}
+          <S.TitleCell>{product.title}</S.TitleCell>
+          {product.category && <S.Category>{product.category}</S.Category>}
         </div>
-      </Td>
-      <TdSm>{product.brand ?? product.vendor ?? '-'}</TdSm>
-      <TdSm>{product.sku ?? '-'}</TdSm>
-      <TdSm>
-        <Rating $low={product.rating < 3}>{product.rating.toFixed(1)}/5</Rating>
-      </TdSm>
-      <TdSm>{formatPrice(product.price)}</TdSm>
-      <Td>
-        <Actions>
-          <IconBtn type="button" title="Дублировать" onClick={() => onDuplicate(product)}>
+      </S.Td>
+      <S.TdSm>{product.brand ?? product.vendor ?? '-'}</S.TdSm>
+      <S.TdSm>{product.sku ?? '-'}</S.TdSm>
+      <S.TdSm>
+        <S.Rating $low={product.rating < 3}>{product.rating.toFixed(1)}/5</S.Rating>
+      </S.TdSm>
+      <S.TdSm>{formatPrice(product.price)}</S.TdSm>
+      <S.Td>
+        <S.Actions>
+          <S.IconBtn type="button" title="Дублировать" onClick={() => onDuplicate(product)}>
             <IconPlus size={16} />
-          </IconBtn>
+          </S.IconBtn>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-              <MenuBtn type="button" title="Ещё">
+              <S.MenuBtn type="button" title="Ещё">
                 <IconDotsVertical size={16} />
-              </MenuBtn>
+              </S.MenuBtn>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
-              <DropdownContent align="end" sideOffset={4}>
-                <MenuItem onSelect={() => onEdit(product)}>Редактировать</MenuItem>
-                <MenuItem onSelect={() => onDuplicate(product)}>Дублировать</MenuItem>
+              <S.DropdownContent align="end" sideOffset={4}>
+                <S.MenuItem onSelect={() => onEdit(product)}>Редактировать</S.MenuItem>
+                <S.MenuItem onSelect={() => onDuplicate(product)}>Дублировать</S.MenuItem>
                 {product.isLocal && (
-                  <MenuItemDanger onSelect={() => onRemove(product)}>Удалить</MenuItemDanger>
+                  <S.MenuItemDanger onSelect={() => onRemove(product)}>Удалить</S.MenuItemDanger>
                 )}
-              </DropdownContent>
+              </S.DropdownContent>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
-        </Actions>
-      </Td>
-    </Row>
+        </S.Actions>
+      </S.Td>
+    </S.Row>
   );
 }

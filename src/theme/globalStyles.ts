@@ -10,7 +10,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Cairo';
     src: url('/fonts/Cairo/Cairo-Regular.ttf') format('truetype');
-    font-weight: 400;
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
     font-style: normal;
     font-display: swap;
   }
@@ -18,7 +18,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Cairo';
     src: url('/fonts/Cairo/Cairo-SemiBold.ttf') format('truetype');
-    font-weight: 600;
+    font-weight: ${({ theme }) => theme.fontWeight.semibold};
     font-style: normal;
     font-display: swap;
   }
@@ -26,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Cairo';
     src: url('/fonts/Cairo/Cairo-Bold.ttf') format('truetype');
-    font-weight: 700;
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
     font-style: normal;
     font-display: swap;
   }
@@ -34,7 +34,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Inter';
     src: url('/fonts/Inter/Inter_28pt-Regular.ttf') format('truetype');
-    font-weight: 400;
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
     font-style: normal;
     font-display: swap;
   }
@@ -42,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Inter';
     src: url('/fonts/Inter/Inter_24pt-Medium.ttf') format('truetype');
-    font-weight: 500;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
     font-style: normal;
     font-display: swap;
   }
@@ -50,7 +50,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Inter';
     src: url('/fonts/Inter/Inter_24pt-SemiBold.ttf') format('truetype');
-    font-weight: 600;
+    font-weight: ${({ theme }) => theme.fontWeight.semibold};
     font-style: normal;
     font-display: swap;
   }
@@ -58,7 +58,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Inter';
     src: url('/fonts/Inter/Inter_24pt-Bold.ttf') format('truetype');
-    font-weight: 700;
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
     font-style: normal;
     font-display: swap;
   }
@@ -66,14 +66,11 @@ export const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-family: ${({ theme }) => theme.fonts.sans};
-    background-color: ${({ theme }) => theme.colors.grey[25]};
     color: ${({ theme }) => theme.colors.grey[800]};
   }
 
   #root {
     min-height: 100vh;
-    max-width: 72rem;
-    margin: 0 auto;
   }
 
   @keyframes progress-fill {

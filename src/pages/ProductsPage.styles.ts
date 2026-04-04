@@ -1,41 +1,67 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { Button } from '@/components/Button';
 import { IconSearch } from '@/components/icons';
 
+
 export const Page = styled.div`
   min-height: 100vh;
-  background: ${({ theme }) => theme.colors.grey[50]};
-  font-family: ${({ theme }) => theme.fonts.inter};
+  width: 100%;
+  font-family: ${({ theme }) => theme.fonts.cairo};
+  background-color: ${({ theme }) => theme.colors.grey[28]};
+  padding-top: 22.5px;
+`;
+
+export const Container = styled.div`
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 export const Header = styled.header`
   background: #fff;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
-  padding: 1rem 1.5rem;
+  padding-bottom: 20px;
+  border-radius: 10px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  margin-bottom: 30px;
 `;
 
 export const HeaderInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `;
 
 export const PageTitle = styled.h1`
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  ${({ theme }) => theme.typography.title}
+  font-family: ${({ theme }) => theme.fonts.cairo};
   color: ${({ theme }) => theme.colors.grey[900]};
+  margin: 0;
 `;
 
 export const HeaderActions = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 10px;
+  width: 100%;
+`;
+
+export const SearchContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 `;
 
 export const SearchWrap = styled.div`
   position: relative;
+  max-width: 1023px;
+  width: 80%;
 `;
 
 export const SearchIcon = styled(IconSearch)`
@@ -43,64 +69,78 @@ export const SearchIcon = styled(IconSearch)`
   left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 1rem;
-  height: 1rem;
-  color: ${({ theme }) => theme.colors.grey[400]};
+  color: ${({ theme }) => theme.colors.grey[600]};
 `;
 
 export const SearchInput = styled.input`
-  width: 16rem;
-  padding: 0.5rem 1rem 0.5rem 2.25rem;
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.grey[400]};
-  }
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.blue[500]};
-    border-color: transparent;
-  }
+  ${({ theme }) => css`
+    width: 100%;
+    height: 48px;
+    padding: 0 20px 0 52px;
+    border: none;
+    border-radius: ${theme.borderRadius.sm};
+    font-size: ${theme.typography.bodySm.fontSize};
+    background-color: ${theme.colors.grey[30]};
+    &::placeholder {
+      color: ${theme.colors.grey[400]};
+    }
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px ${theme.colors.grey[200]};
+    }
+  `}
 `;
 
 export const LogoutButton = styled(Button)`
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  ${({ theme }) => css`
+    height: 48px;
+    font-size: ${theme.typography.bodySm.fontSize};
+    font-weight: ${theme.fontWeight.semibold};
+    border-color: ${theme.colors.grey[300]};
+      &:hover {
+        background: ${theme.colors.grey[100]};
+        border-color: ${theme.colors.grey[300]};
+      }
+  `}
 `;
 
 export const Main = styled.main`
-  padding: 1.5rem;
+  background-color: #fff;
+  padding: 30px;
 `;
 
 export const SectionHead = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 40px;
 `;
 
 export const SectionTitle = styled.h2`
   margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
+  ${({ theme }) => theme.typography.subtitle}
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.colors.grey[700]};
 `;
 
 export const Toolbar = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  height: 42px;
 `;
 
 export const IconButton = styled.button`
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1/1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
-  border: none;
   background: none;
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  color: ${({ theme }) => theme.colors.grey[500]};
+  border: 1px solid ${({ theme }) => theme.colors.grey[50]};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  color: ${({ theme }) => theme.colors.second.DEFAULT};
   cursor: pointer;
   &:hover {
     background: ${({ theme }) => theme.colors.grey[100]};
@@ -109,5 +149,8 @@ export const IconButton = styled.button`
 `;
 
 export const AddButton = styled(Button)`
-  gap: 0.5rem;
+  gap: 15px;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  border-radius: ${({ theme }) => theme.borderRadius.xs};
+  ${({ theme }) => theme.typography.caption};
 `;

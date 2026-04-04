@@ -3,16 +3,7 @@ import { useState } from 'react';
 
 import { IconClear, IconEyeHidden, IconEyeVisible } from '@/components/icons';
 
-import {
-  ErrorText,
-  IconButton,
-  IconLeft,
-  InputWrap,
-  StyledInput,
-  StyledLabel,
-  Trailing,
-  Wrapper,
-} from './AuthInput.styles';
+import * as S from './AuthInput.styles';
 
 interface AuthInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
@@ -43,11 +34,11 @@ export function AuthInput({
   const hasTrailing = (showClear && value) || showPasswordToggle;
 
   return (
-    <Wrapper className={className}>
-      {label && <StyledLabel htmlFor={inputId}>{label}</StyledLabel>}
-      <InputWrap>
-        {leadingIcon && <IconLeft>{leadingIcon}</IconLeft>}
-        <StyledInput
+    <S.Wrapper className={className}>
+      {label && <S.StyledLabel htmlFor={inputId}>{label}</S.StyledLabel>}
+      <S.InputWrap>
+        {leadingIcon && <S.IconLeft>{leadingIcon}</S.IconLeft>}
+        <S.StyledInput
           id={inputId}
           type={inputType}
           value={value}
@@ -59,29 +50,29 @@ export function AuthInput({
           {...props}
         />
         {hasTrailing && (
-          <Trailing>
+          <S.Trailing>
             {showClear && value && (
-              <IconButton type="button" onClick={onClear} aria-label="Очистить">
+              <S.IconButton type="button" onClick={onClear} aria-label="Очистить">
                 <IconClear />
-              </IconButton>
+              </S.IconButton>
             )}
             {showPasswordToggle && (
-              <IconButton
+              <S.IconButton
                 type="button"
                 onClick={() => setShowPassword((p) => !p)}
                 aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
               >
                 {showPassword ? <IconEyeHidden /> : <IconEyeVisible />}
-              </IconButton>
+              </S.IconButton>
             )}
-          </Trailing>
+          </S.Trailing>
         )}
-      </InputWrap>
+      </S.InputWrap>
       {error && (
-        <ErrorText id={`${inputId}-error`} role="alert">
+        <S.ErrorText id={`${inputId}-error`} role="alert">
           {error}
-        </ErrorText>
+        </S.ErrorText>
       )}
-    </Wrapper>
+    </S.Wrapper>
   );
 }

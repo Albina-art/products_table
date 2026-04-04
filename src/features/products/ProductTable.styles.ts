@@ -8,8 +8,8 @@ export const SortBtn = styled.button`
   background: none;
   padding: 0;
   font: inherit;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.grey[700]};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.grey[400]};
   cursor: pointer;
   transition: color 0.15s;
   &:hover {
@@ -24,8 +24,6 @@ export const SortArrow = styled.span`
 export const TableWrap = styled.div`
   position: relative;
   background: #fff;
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
   overflow: hidden;
 `;
 
@@ -59,10 +57,7 @@ export const TheadRow = styled.tr`
   background: rgba(249, 250, 251, 0.5);
 `;
 
-export const Checkbox = styled.input`
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  border-color: ${({ theme }) => theme.colors.grey[300]};
-`;
+export { Checkbox } from './ProductCheckbox.styles';
 
 export const ErrorText = styled.p`
   padding: 2rem 0;
@@ -114,7 +109,7 @@ export const PageNum = styled.button<{ $active?: boolean }>`
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  font-weight: 500;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   cursor: pointer;
   background: ${({ theme, $active }) => ($active ? theme.colors.blue[600] : 'transparent')};
   color: ${({ theme, $active }) => ($active ? '#fff' : theme.colors.grey[600])};

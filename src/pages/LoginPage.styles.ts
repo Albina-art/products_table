@@ -2,17 +2,14 @@ import styled from 'styled-components';
 
 import { GradientText as BaseGradientText } from '@/components/GradientText';
 
-export const GradientText = styled(BaseGradientText)`
-  margin: 12px 0 32px;
-`;
-
 export const Page = styled.div`
   min-height: 100vh;
+  width: 100%;
+  font-family: ${({ theme }) => theme.fonts.inter};
+  background-color: ${({ theme }) => theme.colors.grey[25]};
+  padding: 48px 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 48px;
-  font-family: ${({ theme }) => theme.fonts.inter};
 `;
 
 export const CardWrapper = styled.div`
@@ -21,6 +18,9 @@ export const CardWrapper = styled.div`
   box-shadow: 0 24px 32px 0 rgba(0, 0, 0, 0.04);
   background: white;
   border-radius: 40px;
+  max-width: max-content;
+  max-height: max-content;
+  margin: 0 auto;
 `;
 
 export const Card = styled.div`
@@ -84,4 +84,8 @@ export const Logo = styled.img`
 export const Title = styled.h1`
   margin: 0;
   ${({ theme }) => theme.typography.display};
+`;
+
+export const GradientText = styled(BaseGradientText)`
+  margin: 12px 0 32px;
 `;

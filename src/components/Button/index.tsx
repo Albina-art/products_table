@@ -42,7 +42,7 @@ const StyledButton = styled.button<{ $variant: 'primary' | 'secondary' | 'outlin
   border-radius: ${({ theme }) => theme.borderRadius.md};
   padding: 0.5rem 1rem;
   font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  font-weight: 500;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   border: 1px solid;
   transition: color 0.15s, background 0.15s, border-color 0.15s;
   cursor: pointer;
@@ -60,7 +60,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <StyledButton type="button" $variant={variant} className={className} {...props}>
+    <StyledButton style={{ fontFamily: 'inherit' }} type="button" $variant={variant} className={className} {...props}>
       {children}
     </StyledButton>
   );

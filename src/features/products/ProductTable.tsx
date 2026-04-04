@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { IconChevronLeft, IconChevronRight } from '@/components/icons';
 import { Modal } from '@/components/Modal';
@@ -7,22 +7,7 @@ import type { Product } from '@/types/product';
 
 import { ProductForm } from './ProductForm';
 import { ProductItem } from './ProductItem';
-import {
-  Checkbox,
-  ErrorText,
-  FetchingBar,
-  PageBtn,
-  PageInfo,
-  PageNav,
-  PageNum,
-  Pagination,
-  SortArrow,
-  SortBtn,
-  StyledTable,
-  TableWrap,
-  Th,
-  TheadRow,
-} from './ProductTable.styles';
+import * as S from './ProductTable.styles';
 import { ProductTableSkeleton } from './ProductTableSkeleton';
 import { useProductsQuery } from './useProductsQuery';
 import { useProductStore } from './useProductStore';
@@ -41,10 +26,10 @@ function SortHeader({
   onSort: (key: keyof Product) => void;
 }) {
   return (
-    <SortBtn type="button" onClick={() => onSort(colKey as keyof Product)}>
+    <S.SortBtn type="button" onClick={() => onSort(colKey as keyof Product)}>
       {label}
-      {sortKey === colKey && <SortArrow>{sortOrder === 'asc' ? ' ↑' : ' ↓'}</SortArrow>}
-    </SortBtn>
+      {sortKey === colKey && <S.SortArrow>{sortOrder === 'asc' ? ' ↑' : ' ↓'}</S.SortArrow>}
+    </S.SortBtn>
   );
 }
 
@@ -60,6 +45,7 @@ export function ProductTable() {
     updatedProducts,
     selectedIds,
     toggleSelect,
+    deselect,
     page,
     limit,
     setPage,
@@ -115,28 +101,38 @@ export function ProductTable() {
   const start = (page - 1) * limit + 1;
   const end = Math.min(page * limit, total);
 
+  const isAllSelected = selectedIds.length === products.length;
+
+  const toggleSelectAll = useCallback(() => {
+    if (isAllSelected) {
+      deselect(products.map((product) => product.id));
+    } else {
+      toggleSelect(products.map((product) => product.id));
+    }
+  }, [isAllSelected, products, deselect, toggleSelect]);
+
   if (isLoading) {
     return <ProductTableSkeleton />;
   }
 
   if (error) {
-    return <ErrorText>Ошибка загрузки: {String(error)}</ErrorText>;
+    return <S.ErrorText>Ошибка загрузки: {String(error)}</S.ErrorText>;
   }
 
   return (
-    <TableWrap>
+    <S.TableWrap>
       {isFetching && (
-        <FetchingBar>
+        <S.FetchingBar>
           <div className="progress-bar-fill" style={{ height: '100%', minHeight: 4 }} />
-        </FetchingBar>
+        </S.FetchingBar>
       )}
-      <StyledTable>
+      <S.StyledTable>
         <thead>
-          <TheadRow>
-            <Th $narrow>
-              <Checkbox type="checkbox" readOnly />
-            </Th>
-            <Th>
+          <S.TheadRow>
+            <S.Th $narrow>
+              <S.Checkbox checked={isAllSelected} onChange={toggleSelectAll} />
+            </S.Th>
+            <S.Th>
               <SortHeader
                 colKey="title"
                 label="Наименование"
@@ -144,8 +140,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </Th>
-            <Th>
+            </S.Th>
+            <S.Th>
               <SortHeader
                 colKey="brand"
                 label="Вендор"
@@ -153,8 +149,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </Th>
-            <Th>
+            </S.Th>
+            <S.Th>
               <SortHeader
                 colKey="sku"
                 label="Артикул"
@@ -162,8 +158,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </Th>
-            <Th>
+            </S.Th>
+            <S.Th>
               <SortHeader
                 colKey="rating"
                 label="Оценка"
@@ -171,8 +167,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </Th>
-            <Th>
+            </S.Th>
+            <S.Th>
               <SortHeader
                 colKey="price"
                 label="Цена, P"
@@ -180,9 +176,9 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </Th>
-            <Th style={{ width: '6rem' }} />
-          </TheadRow>
+            </S.Th>
+            <S.Th style={{ width: '6rem' }} />
+          </S.TheadRow>
         </thead>
         <tbody>
           {products.map((product) => (
@@ -190,14 +186,14 @@ export function ProductTable() {
               key={product.id}
               product={product}
               isSelected={selectedIds.includes(product.id)}
-              onToggleSelect={toggleSelect}
+              onToggleSelect={() => toggleSelect([product.id])}
               onDuplicate={handleDuplicate}
               onEdit={handleEdit}
               onRemove={handleRemove}
             />
           ))}
         </tbody>
-      </StyledTable>
+      </S.StyledTable>
 
       <Modal
         isOpen={!!editingProduct}
@@ -209,28 +205,28 @@ export function ProductTable() {
         )}
       </Modal>
 
-      <Pagination>
-        <PageInfo>
+      <S.Pagination>
+        <S.PageInfo>
           Показано {start}-{end} из {total}
-        </PageInfo>
-        <PageNav>
-          <PageBtn type="button" disabled={page <= 1} onClick={() => setPage(page - 1)}>
+        </S.PageInfo>
+        <S.PageNav>
+          <S.PageBtn type="button" disabled={page <= 1} onClick={() => setPage(page - 1)}>
             <IconChevronLeft />
-          </PageBtn>
+          </S.PageBtn>
           {Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + 1).map((p) => (
-            <PageNum key={p} type="button" $active={p === page} onClick={() => setPage(p)}>
+            <S.PageNum key={p} type="button" $active={p === page} onClick={() => setPage(p)}>
               {p}
-            </PageNum>
+            </S.PageNum>
           ))}
-          <PageBtn
+          <S.PageBtn
             type="button"
             disabled={page >= totalPages}
             onClick={() => setPage(page + 1)}
           >
             <IconChevronRight />
-          </PageBtn>
-        </PageNav>
-      </Pagination>
-    </TableWrap>
+          </S.PageBtn>
+        </S.PageNav>
+      </S.Pagination>
+    </S.TableWrap>
   );
 }

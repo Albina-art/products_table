@@ -4,15 +4,12 @@ const SKELETON_ROWS = 10;
 
 const Wrap = styled.div`
   background: #fff;
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
   overflow: hidden;
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  font-family: ${({ theme }) => theme.fonts.robotoMono};
 `;
 
 const Th = styled.th`
@@ -22,7 +19,6 @@ const Th = styled.th`
 
 const TheadRow = styled.tr`
   border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
-  background: rgba(249, 250, 251, 0.5);
 `;
 
 const Tr = styled.tr`

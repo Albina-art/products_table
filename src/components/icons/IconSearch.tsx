@@ -3,25 +3,13 @@ import { forwardRef } from 'react';
 import type { IconProps } from './types';
 
 export const IconSearch = forwardRef<SVGSVGElement, IconProps>(function IconSearch(
-  { size = 16, ...props },
+  { size = 24, ...props },
   ref
 ) {
   return (
-    <svg
-      ref={ref}
-      width={size}
-      height={size}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      {...props}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-      />
+    <svg ref={ref} width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 });

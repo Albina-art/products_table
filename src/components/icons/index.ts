@@ -1,3 +1,4 @@
+export { IconCheckbox } from './IconCheckbox';
 export { IconChevronLeft } from './IconChevronLeft';
 export { IconChevronRight } from './IconChevronRight';
 export { IconClear } from './IconClear';
@@ -10,3 +11,4 @@ export { IconPlus } from './IconPlus';
 export { IconRefresh } from './IconRefresh';
 export { IconSearch } from './IconSearch';
 export type { IconProps } from './types';
+

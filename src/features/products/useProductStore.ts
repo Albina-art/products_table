@@ -19,7 +19,8 @@ interface ProductState {
   addProduct: (product: Product) => void;
   updateProduct: (product: Product) => void;
   removeProduct: (id: number) => void;
-  toggleSelect: (id: number) => void;
+  toggleSelect: (ids: number[]) => void;
+  deselect: (ids: number[]) => void;
   setPage: (page: number) => void;
 }
 
@@ -74,11 +75,14 @@ export const useProductStore = create<ProductState>()(
           })(),
         })),
 
-      toggleSelect: (id) =>
+      toggleSelect: (ids) =>
         set((state) => ({
-          selectedIds: state.selectedIds.includes(id)
-            ? state.selectedIds.filter((x) => x !== id)
-            : [...state.selectedIds, id],
+          selectedIds: [...new Set([...state.selectedIds, ...ids])],
+        })),
+
+      deselect: (ids) =>
+        set((state) => ({
+          selectedIds: state.selectedIds.filter((x) => !ids.includes(x)),
         })),
 
       setPage: (page: number) => set({ page }),

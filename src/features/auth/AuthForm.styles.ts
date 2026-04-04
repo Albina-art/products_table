@@ -35,7 +35,7 @@ export const SubmitButton = styled(Button)`
   width: 100%;
   min-height: 54px;
   font-size: ${({ theme }) => theme.typography.lead.fontSize};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 export const DividerWrap = styled.div`
@@ -55,7 +55,7 @@ export const Footer = styled.p`
   margin: 16px 0 0;
   text-align: center;
   font-size: ${({ theme }) => theme.typography.lead.fontSize};
-  font-weight: 400;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
   color: ${({ theme }) => theme.colors.grey[600]};
 `;
 
@@ -67,7 +67,7 @@ export const FooterLink = styled.button`
   padding: 0;
   margin: 0;
   font-size: ${({ theme }) => theme.typography.lead.fontSize};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   margin-left: 4px;
   color: ${({ theme }) => theme.colors.primary.DEFAULT};
   text-decoration: underline;

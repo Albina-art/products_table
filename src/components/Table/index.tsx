@@ -24,7 +24,7 @@ const StyledTable = styled.table`
 
 const Th = styled.th`
   padding: 0.75rem 1rem;
-  font-weight: 500;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.grey[700]};
 `;
 

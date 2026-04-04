@@ -1,10 +1,9 @@
-import { useState, type SubmitEventHandler } from 'react';
+import { type SubmitEventHandler,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthInput } from '@/components/AuthInput';
 import { GradientText } from '@/components/GradientText';
-import { IconLock, IconPerson } from '@/components/icons';
-import { IconCheckbox } from '@/components/icons/IconCheckbox';
+import { IconCheckbox, IconLock, IconPerson } from '@/components/icons';
 
 import { useToast } from '../ui/useToast';
 import * as S from './AuthForm.styles';
