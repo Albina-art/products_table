@@ -1,33 +1,67 @@
-import { Slot } from '@radix-ui/react-slot';
 import type { ButtonHTMLAttributes } from 'react';
+import styled, { css } from 'styled-components';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline';
-  asChild?: boolean;
   children: React.ReactNode;
 }
 
 const variantStyles = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 border-blue-600',
-  secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 border-gray-200',
-  outline: 'bg-transparent text-gray-700 hover:bg-gray-100 border-gray-300',
+  primary: css`
+    background: ${({ theme }) => theme.colors.blue[600]};
+    color: #fff;
+    border-color: ${({ theme }) => theme.colors.blue[600]};
+    &:hover:not(:disabled) {
+      background: ${({ theme }) => theme.colors.blue[700]};
+      border-color: ${({ theme }) => theme.colors.blue[700]};
+    }
+  `,
+  secondary: css`
+    background: ${({ theme }) => theme.colors.grey[100]};
+    color: ${({ theme }) => theme.colors.grey[900]};
+    border-color: ${({ theme }) => theme.colors.grey[200]};
+    &:hover:not(:disabled) {
+      background: ${({ theme }) => theme.colors.grey[200]};
+    }
+  `,
+  outline: css`
+    background: transparent;
+    color: ${({ theme }) => theme.colors.grey[700]};
+    border-color: ${({ theme }) => theme.colors.grey[300]};
+    &:hover:not(:disabled) {
+      background: ${({ theme }) => theme.colors.grey[100]};
+    }
+  `,
 };
+
+const StyledButton = styled.button<{ $variant: 'primary' | 'secondary' | 'outline' }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 0.5rem 1rem;
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  font-weight: 500;
+  border: 1px solid;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  cursor: pointer;
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  ${({ $variant }) => variantStyles[$variant]}
+`;
 
 export function Button({
   variant = 'primary',
-  asChild = false,
   children,
-  className = '',
+  className,
   ...props
 }: ButtonProps) {
-  const Comp = asChild ? Slot : 'button';
   return (
-    <Comp
-      type="button"
-      className={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium border transition-colors disabled:opacity-50 disabled:pointer-events-none ${variantStyles[variant]} ${className}`}
-      {...props}
-    >
+    <StyledButton type="button" $variant={variant} className={className} {...props}>
       {children}
-    </Comp>
+    </StyledButton>
   );
 }

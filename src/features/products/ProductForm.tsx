@@ -1,10 +1,17 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import type { Product } from '@/types/product';
 
 import { useProductStore } from './useProductStore';
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
 interface ProductFormProps {
   initialProduct?: Product;
@@ -54,30 +61,17 @@ export function ProductForm({ initialProduct, onSuccess }: ProductFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <Form onSubmit={handleSubmit}>
       <Input
         label="Наименование"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
       />
-      <Input
-        label="Цена"
-        type="number"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <Input
-        label="Вендор"
-        value={vendor}
-        onChange={(e) => setVendor(e.target.value)}
-      />
-      <Input
-        label="Артикул"
-        value={sku}
-        onChange={(e) => setSku(e.target.value)}
-      />
+      <Input label="Цена" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+      <Input label="Вендор" value={vendor} onChange={(e) => setVendor(e.target.value)} />
+      <Input label="Артикул" value={sku} onChange={(e) => setSku(e.target.value)} />
       <Button type="submit">{initialProduct ? 'Сохранить' : 'Добавить'}</Button>
-    </form>
+    </Form>
   );
 }

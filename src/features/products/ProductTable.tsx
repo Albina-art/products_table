@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import styled from 'styled-components';
 
 import { Modal } from '@/components/Modal';
 import { useToast } from '@/features/ui/useToast';
@@ -9,6 +10,27 @@ import { ProductItem } from './ProductItem';
 import { ProductTableSkeleton } from './ProductTableSkeleton';
 import { useProductsQuery } from './useProductsQuery';
 import { useProductStore } from './useProductStore';
+
+const SortBtn = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.grey[700]};
+  cursor: pointer;
+  transition: color 0.15s;
+  &:hover {
+    color: ${({ theme }) => theme.colors.blue[600]};
+  }
+`;
+
+const SortArrow = styled.span`
+  color: ${({ theme }) => theme.colors.blue[600]};
+`;
 
 function SortHeader({
   colKey,
@@ -24,18 +46,116 @@ function SortHeader({
   onSort: (key: keyof Product) => void;
 }) {
   return (
-    <button
-      type="button"
-      className="flex items-center gap-1 font-medium text-gray-700 hover:text-blue-600 transition-colors"
-      onClick={() => onSort(colKey as keyof Product)}
-    >
+    <SortBtn type="button" onClick={() => onSort(colKey as keyof Product)}>
       {label}
       {sortKey === colKey && (
-        <span className="text-blue-600">{sortOrder === 'asc' ? ' ↑' : ' ↓'}</span>
+        <SortArrow>{sortOrder === 'asc' ? ' ↑' : ' ↓'}</SortArrow>
       )}
-    </button>
+    </SortBtn>
   );
 }
+
+const TableWrap = styled.div`
+  position: relative;
+  background: #fff;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  overflow: hidden;
+`;
+
+const FetchingBar = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: ${({ theme }) => theme.colors.grey[100]};
+  overflow: hidden;
+  border-radius: ${({ theme }) => theme.borderRadius.lg} ${({ theme }) => theme.borderRadius.lg} 0 0;
+  z-index: 10;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ${({ theme }) => theme.fonts.robotoMono};
+`;
+
+const Th = styled.th<{ $narrow?: boolean }>`
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: inherit;
+  width: ${({ $narrow }) => ($narrow ? '3rem' : 'auto')};
+`;
+
+const TheadRow = styled.tr`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  background: rgba(249, 250, 251, 0.5);
+`;
+
+const Checkbox = styled.input`
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-color: ${({ theme }) => theme.colors.grey[300]};
+`;
+
+const ErrorText = styled.p`
+  padding: 2rem 0;
+  color: ${({ theme }) => theme.colors.red[600]};
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  background: rgba(249, 250, 251, 0.3);
+`;
+
+const PageInfo = styled.span`
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.grey[600]};
+`;
+
+const PageNav = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
+const PageBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  cursor: pointer;
+  color: inherit;
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.grey[200]};
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const PageNum = styled.button<{ $active?: boolean }>`
+  min-width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  font-weight: 500;
+  cursor: pointer;
+  background: ${({ theme, $active }) => ($active ? theme.colors.blue[600] : 'transparent')};
+  color: ${({ theme, $active }) => ($active ? '#fff' : theme.colors.grey[600])};
+  &:hover {
+    background: ${({ theme, $active }) => ($active ? theme.colors.blue[600] : theme.colors.grey[200])};
+  }
+`;
 
 export function ProductTable() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -111,25 +231,23 @@ export function ProductTable() {
   }
 
   if (error) {
-    return (
-      <p className="py-8 text-red-600">Ошибка загрузки: {String(error)}</p>
-    );
+    return <ErrorText>Ошибка загрузки: {String(error)}</ErrorText>;
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden relative">
+    <TableWrap>
       {isFetching && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gray-100 overflow-hidden rounded-t-lg z-10">
-          <div className="h-full w-0 min-h-[4px] rounded-full progress-bar-fill" />
-        </div>
+        <FetchingBar>
+          <div className="progress-bar-fill" style={{ height: '100%', minHeight: 4 }} />
+        </FetchingBar>
       )}
-      <table className="w-full">
+      <StyledTable>
         <thead>
-          <tr className="border-b border-gray-200 bg-gray-50/50">
-            <th className="w-12 px-4 py-3">
-              <input type="checkbox" className="rounded border-gray-300" readOnly />
-            </th>
-            <th className="px-4 py-3 text-left">
+          <TheadRow>
+            <Th $narrow>
+              <Checkbox type="checkbox" readOnly />
+            </Th>
+            <Th>
               <SortHeader
                 colKey="title"
                 label="Наименование"
@@ -137,8 +255,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </th>
-            <th className="px-4 py-3 text-left">
+            </Th>
+            <Th>
               <SortHeader
                 colKey="brand"
                 label="Вендор"
@@ -146,8 +264,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </th>
-            <th className="px-4 py-3 text-left">
+            </Th>
+            <Th>
               <SortHeader
                 colKey="sku"
                 label="Артикул"
@@ -155,8 +273,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </th>
-            <th className="px-4 py-3 text-left">
+            </Th>
+            <Th>
               <SortHeader
                 colKey="rating"
                 label="Оценка"
@@ -164,8 +282,8 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </th>
-            <th className="px-4 py-3 text-left">
+            </Th>
+            <Th>
               <SortHeader
                 colKey="price"
                 label="Цена, P"
@@ -173,9 +291,9 @@ export function ProductTable() {
                 sortOrder={sortOrder}
                 onSort={setSort}
               />
-            </th>
-            <th className="w-24 px-4 py-3" />
-          </tr>
+            </Th>
+            <Th style={{ width: '6rem' }} />
+          </TheadRow>
         </thead>
         <tbody>
           {products.map((product) => (
@@ -190,7 +308,7 @@ export function ProductTable() {
             />
           ))}
         </tbody>
-      </table>
+      </StyledTable>
 
       <Modal
         isOpen={!!editingProduct}
@@ -198,54 +316,36 @@ export function ProductTable() {
         title="Редактировать товар"
       >
         {editingProduct && (
-          <ProductForm
-            initialProduct={editingProduct}
-            onSuccess={handleEditSuccess}
-          />
+          <ProductForm initialProduct={editingProduct} onSuccess={handleEditSuccess} />
         )}
       </Modal>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50/30">
-        <span className="text-sm text-gray-600">
+      <Pagination>
+        <PageInfo>
           Показано {start}-{end} из {total}
-        </span>
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            className="p-2 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={page <= 1}
-            onClick={() => setPage(page - 1)}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        </PageInfo>
+        <PageNav>
+          <PageBtn type="button" disabled={page <= 1} onClick={() => setPage(page - 1)}>
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-          </button>
+          </PageBtn>
           {Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + 1).map((p) => (
-            <button
-              key={p}
-              type="button"
-              className={`min-w-[32px] h-8 rounded text-sm font-medium ${p === page
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-600 hover:bg-gray-200'
-                }`}
-              onClick={() => setPage(p)}
-            >
+            <PageNum key={p} type="button" $active={p === page} onClick={() => setPage(p)}>
               {p}
-            </button>
+            </PageNum>
           ))}
-          <button
+          <PageBtn
             type="button"
-            className="p-2 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={page >= totalPages}
             onClick={() => setPage(page + 1)}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </button>
-        </div>
-      </div>
-    </div>
+          </PageBtn>
+        </PageNav>
+      </Pagination>
+    </TableWrap>
   );
 }

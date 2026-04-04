@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import type { ReactNode } from 'react';
+import styled from 'styled-components';
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,31 +9,70 @@ interface ModalProps {
   children: ReactNode;
 }
 
+const StyledOverlay = styled(Dialog.Overlay)`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+`;
+
+const StyledContent = styled(Dialog.Content)`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 50;
+  width: 100%;
+  max-width: 28rem;
+  transform: translate(-50%, -50%);
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  background: #fff;
+  padding: 1.5rem;
+  box-shadow: ${({ theme }) => theme.shadow.xl};
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+const Title = styled(Dialog.Title)`
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+`;
+
+const CloseBtn = styled.button`
+  border: none;
+  background: none;
+  padding: 0.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  color: ${({ theme }) => theme.colors.grey[500]};
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  &:hover {
+    background: ${({ theme }) => theme.colors.grey[100]};
+    color: ${({ theme }) => theme.colors.grey[700]};
+  }
+`;
+
 export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-        <Dialog.Content
-          className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-xl"
-          onPointerDownOutside={onClose}
-        >
-          <div className="flex items-center justify-between mb-4">
-            {title && (
-              <Dialog.Title className="text-lg font-semibold">{title}</Dialog.Title>
-            )}
+        <StyledOverlay />
+        <StyledContent onPointerDownOutside={onClose}>
+          <Header>
+            {title ? <Title>{title}</Title> : <span />}
             <Dialog.Close asChild>
-              <button
-                type="button"
-                className="rounded p-1 hover:bg-gray-100 text-gray-500 hover:text-gray-700"
-                aria-label="Закрыть"
-              >
+              <CloseBtn type="button" aria-label="Закрыть">
                 ×
-              </button>
+              </CloseBtn>
             </Dialog.Close>
-          </div>
+          </Header>
           <div>{children}</div>
-        </Dialog.Content>
+        </StyledContent>
       </Dialog.Portal>
     </Dialog.Root>
   );

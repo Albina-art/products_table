@@ -1,41 +1,67 @@
 import * as Label from '@radix-ui/react-label';
 import type { InputHTMLAttributes } from 'react';
+import styled from 'styled-components';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
 }
 
-export function Input({ label, error, id, className = '', ...props }: InputProps) {
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const StyledLabel = styled(Label.Root)`
+  display: block;
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.grey[700]};
+`;
+
+const StyledInput = styled.input<{ $hasError?: boolean }>`
+  width: 100%;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid
+    ${({ theme, $hasError }) => ($hasError ? theme.colors.red[500] : theme.colors.grey[300])};
+  padding: 0.5rem 0.75rem;
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.grey[400]};
+  }
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.blue[500]};
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+`;
+
+const ErrorText = styled.span`
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.red[600]};
+`;
+
+export function Input({ label, error, id, className, ...props }: InputProps) {
   const inputId = id ?? label?.toLowerCase().replace(/\s/g, '-');
   return (
-    <div className="space-y-2">
-      {label && (
-        <Label.Root
-          htmlFor={inputId}
-          className="block text-sm font-medium text-gray-700"
-        >
-          {label}
-        </Label.Root>
-      )}
-      <input
+    <Wrapper className={className}>
+      {label && <StyledLabel htmlFor={inputId}>{label}</StyledLabel>}
+      <StyledInput
         id={inputId}
-        className={`w-full rounded-md border px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${
-          error ? 'border-red-500' : 'border-gray-300'
-        } ${className}`}
+        $hasError={!!error}
         aria-invalid={!!error}
         aria-describedby={error ? `${inputId}-error` : undefined}
         {...props}
       />
       {error && (
-        <span
-          id={`${inputId}-error`}
-          className="text-sm text-red-600"
-          role="alert"
-        >
+        <ErrorText id={`${inputId}-error`} role="alert">
           {error}
-        </span>
+        </ErrorText>
       )}
-    </div>
+    </Wrapper>
   );
 }

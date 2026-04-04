@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import styled, { css } from 'styled-components';
 
 export interface ToastItem {
   id: string;
@@ -11,35 +12,72 @@ interface ToastProps {
   onDismiss: (id: string) => void;
 }
 
-const typeStyles = {
-  success: 'border-l-4 border-l-green-500',
-  error: 'border-l-4 border-l-red-500',
-  info: 'border-l-4 border-l-blue-500',
+const Wrap = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+  max-width: 420px;
+`;
+
+const typeBorder = {
+  success: css`
+    border-left: 4px solid ${({ theme }) => theme.colors.green[500]};
+  `,
+  error: css`
+    border-left: 4px solid ${({ theme }) => theme.colors.red[500]};
+  `,
+  info: css`
+    border-left: 4px solid ${({ theme }) => theme.colors.blue[500]};
+  `,
 };
+
+const ToastBox = styled.div<{ $type: 'success' | 'error' | 'info' }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  background: #fff;
+  padding: 0.75rem 1rem;
+  box-shadow: ${({ theme }) => theme.shadow.lg};
+  ${({ $type }) => typeBorder[$type]}
+`;
+
+const Message = styled.span`
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.grey[700]};
+`;
+
+const CloseBtn = styled.button`
+  border: none;
+  background: none;
+  padding: 0.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  color: ${({ theme }) => theme.colors.grey[400]};
+  cursor: pointer;
+  font-size: 1.125rem;
+  line-height: 1;
+  &:hover {
+    background: ${({ theme }) => theme.colors.grey[100]};
+    color: ${({ theme }) => theme.colors.grey[600]};
+  }
+`;
 
 export function Toast({ toasts, onDismiss }: ToastProps) {
   return (
-    <div
-      className="fixed bottom-4 right-4 z-[100] flex flex-col-reverse gap-2 max-w-[420px]"
-      aria-live="polite"
-    >
+    <Wrap aria-live="polite">
       {toasts.map((toast) => (
-        <div
-          key={toast.id}
-          role="alert"
-          className={`flex items-center justify-between gap-4 rounded-lg bg-white px-4 py-3 shadow-lg ${typeStyles[toast.type ?? 'info']}`}
-        >
-          <span className="text-sm text-gray-700">{toast.message}</span>
-          <button
-            type="button"
-            onClick={() => onDismiss(toast.id)}
-            className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-            aria-label="Закрыть"
-          >
+        <ToastBox key={toast.id} role="alert" $type={toast.type ?? 'info'}>
+          <Message>{toast.message}</Message>
+          <CloseBtn type="button" onClick={() => onDismiss(toast.id)} aria-label="Закрыть">
             ×
-          </button>
-        </div>
+          </CloseBtn>
+        </ToastBox>
       ))}
-    </div>
+    </Wrap>
   );
 }

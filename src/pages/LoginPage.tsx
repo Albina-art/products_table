@@ -1,26 +1,134 @@
 import { AuthForm } from '@/features/auth/AuthForm';
+import styled from 'styled-components';
+import logo from '/logo.svg';
 
-const LogoIcon = () => (
-  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-gray-800">
-    <rect x="8" y="12" width="3" height="8" rx="1.5" fill="currentColor" />
-    <rect x="14.5" y="8" width="3" height="16" rx="1.5" fill="currentColor" />
-    <rect x="21" y="14" width="3" height="4" rx="1.5" fill="currentColor" />
+const Page = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  font-family: ${({ theme }) => theme.fonts.inter};
+`;
+
+const CardWrapper = styled.div`
+  position: relative;
+  padding: 6px;
+  box-shadow: 0 24px 32px 0 rgba(0, 0, 0, 0.04);
+  background: white;
+  border-radius: 40px;
+`;
+
+const Card = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 495px;
+  border-radius: 34px;
+  background: white;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border-radius: 34px;
+    background: linear-gradient(180deg, rgba(35, 35, 35, 0.03) 0%, rgba(35, 35, 35, 0) 50%);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 34px;
+    background: linear-gradient(180deg, #EDEDED 19.5571%, rgba(237, 237, 237, 0) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+`;
+
+const Content = styled.div`
+  position: relative;
+  margin: 1px;
+  border-radius: 33.5px;
+  padding: 48px;
+  box-sizing: border-box;
+  background: white;
+  z-index: 2;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+
+const Logo = styled.img`
+  border-radius: 50%;
+  box-shadow: ${({ theme }) => theme.shadow.logo};
+  margin-bottom: 32px;
+`;
+
+const Title = styled.h1`
+  margin: 0;
+  ${({ theme }) => theme.typography.display};
+`;
+
+const Subtitle = styled.text`
+  background: transparent;
+  ${({ theme }) => theme.typography.lead};
+  fill: ${({ theme }) => theme.colors.grey[200]};
+`;
+
+const GradientText = ({ text }: { text: string }) => (
+  <svg
+    width="272px"
+    viewBox="0 0 272 27"
+    preserveAspectRatio="xMidYMid meet"
+    style={{ maxWidth: '419px', margin: '12px 0 32px' }}
+  >
+    <defs>
+      <filter id="innerShadow">
+        <feOffset dy="4" />
+        <feGaussianBlur stdDeviation="2" />
+        <feComposite operator="arithmetic" k2="-1" k3="1" in2="SourceAlpha" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.17 0" />
+        <feBlend mode="normal" in2="SourceGraphic" />
+      </filter>
+    </defs>
+    <Subtitle
+      x="0"
+      y="20"
+      filter="url(#innerShadow)"
+    >
+      {text}
+    </Subtitle>
   </svg>
 );
 
 export function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-6">
-      <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-gray-50/50 p-8 shadow-sm">
-        <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800">
-            <LogoIcon />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-800">Добро пожаловать!</h1>
-          <p className="mt-1 text-sm text-gray-500">Пожалуйста, авторизируйтесь</p>
-        </div>
-        <AuthForm />
-      </div>
-    </div>
+    <Page>
+      <CardWrapper>
+        <Card>
+          <Content>
+            <Header>
+              <Logo src={logo} alt="Logo" width={52} height={52} />
+              <Title>Добро пожаловать!</Title>
+              <GradientText text="Пожалуйста, авторизируйтесь" />
+            </Header>
+            <AuthForm />
+          </Content>
+        </Card>
+      </CardWrapper>
+    </Page>
   );
 }

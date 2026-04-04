@@ -1,70 +1,117 @@
+import styled from 'styled-components';
+
 const SKELETON_ROWS = 10;
 
-function SkeletonCell({ className = '' }: { className?: string }) {
-  return <div className={`h-4 skeleton ${className}`} />;
-}
+const Wrap = styled.div`
+  background: #fff;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  overflow: hidden;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ${({ theme }) => theme.fonts.robotoMono};
+`;
+
+const Th = styled.th`
+  padding: 0.75rem 1rem;
+  text-align: left;
+`;
+
+const TheadRow = styled.tr`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  background: rgba(249, 250, 251, 0.5);
+`;
+
+const Tr = styled.tr`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[100]};
+`;
+
+const Td = styled.td`
+  padding: 0.75rem 1rem;
+`;
+
+const SkeletonBlock = styled.div<{ $w?: string; $h?: string; $round?: boolean }>`
+  height: ${({ $h }) => $h ?? '1rem'};
+  width: ${({ $w }) => $w ?? '100%'};
+  max-width: ${({ $w }) => $w};
+  border-radius: ${({ $round, theme }) => ($round ? theme.borderRadius.full : '4px')};
+`;
+
+const Stack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const Flex = styled.div`
+  display: flex;
+  gap: 0.25rem;
+`;
 
 export function ProductTableSkeleton() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-      <table className="w-full">
+    <Wrap>
+      <Table>
         <thead>
-          <tr className="border-b border-gray-200 bg-gray-50/50">
-            <th className="w-12 px-4 py-3">
-              <div className="h-4 w-4 skeleton rounded" />
-            </th>
-            <th className="px-4 py-3 text-left">
-              <div className="h-4 w-24 skeleton" />
-            </th>
-            <th className="px-4 py-3 text-left">
-              <div className="h-4 w-16 skeleton" />
-            </th>
-            <th className="px-4 py-3 text-left">
-              <div className="h-4 w-16 skeleton" />
-            </th>
-            <th className="px-4 py-3 text-left">
-              <div className="h-4 w-14 skeleton" />
-            </th>
-            <th className="px-4 py-3 text-left">
-              <div className="h-4 w-16 skeleton" />
-            </th>
-            <th className="w-24 px-4 py-3" />
-          </tr>
+          <TheadRow>
+            <Th style={{ width: '3rem' }}>
+              <SkeletonBlock className="skeleton" $w="1rem" $round />
+            </Th>
+            <Th>
+              <SkeletonBlock className="skeleton" $w="6rem" />
+            </Th>
+            <Th>
+              <SkeletonBlock className="skeleton" $w="4rem" />
+            </Th>
+            <Th>
+              <SkeletonBlock className="skeleton" $w="4rem" />
+            </Th>
+            <Th>
+              <SkeletonBlock className="skeleton" $w="3.5rem" />
+            </Th>
+            <Th>
+              <SkeletonBlock className="skeleton" $w="4rem" />
+            </Th>
+            <Th style={{ width: '6rem' }} />
+          </TheadRow>
         </thead>
         <tbody>
           {Array.from({ length: SKELETON_ROWS }).map((_, i) => (
-            <tr key={i} className="border-b border-gray-100">
-              <td className="px-4 py-3">
-                <div className="h-4 w-4 skeleton rounded" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="space-y-2">
-                  <SkeletonCell className="w-3/4 max-w-[200px]" />
-                  <SkeletonCell className="w-1/2 max-w-[120px] h-3" />
-                </div>
-              </td>
-              <td className="px-4 py-3">
-                <SkeletonCell className="w-20" />
-              </td>
-              <td className="px-4 py-3">
-                <SkeletonCell className="w-24" />
-              </td>
-              <td className="px-4 py-3">
-                <SkeletonCell className="w-12" />
-              </td>
-              <td className="px-4 py-3">
-                <SkeletonCell className="w-16" />
-              </td>
-              <td className="px-4 py-3">
-                <div className="flex gap-1">
-                  <div className="h-8 w-8 skeleton rounded-full" />
-                  <div className="h-8 w-8 skeleton rounded-full" />
-                </div>
-              </td>
-            </tr>
+            <Tr key={i}>
+              <Td>
+                <SkeletonBlock className="skeleton" $w="1rem" $round />
+              </Td>
+              <Td>
+                <Stack>
+                  <SkeletonBlock className="skeleton" $w="200px" />
+                  <SkeletonBlock className="skeleton" $w="120px" $h="0.75rem" />
+                </Stack>
+              </Td>
+              <Td>
+                <SkeletonBlock className="skeleton" $w="5rem" />
+              </Td>
+              <Td>
+                <SkeletonBlock className="skeleton" $w="6rem" />
+              </Td>
+              <Td>
+                <SkeletonBlock className="skeleton" $w="3rem" />
+              </Td>
+              <Td>
+                <SkeletonBlock className="skeleton" $w="4rem" />
+              </Td>
+              <Td>
+                <Flex>
+                  <SkeletonBlock className="skeleton" $w="2rem" $h="2rem" $round />
+                  <SkeletonBlock className="skeleton" $w="2rem" $h="2rem" $round />
+                </Flex>
+              </Td>
+            </Tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Wrap>
   );
 }

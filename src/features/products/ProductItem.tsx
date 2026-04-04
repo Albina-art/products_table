@@ -1,4 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import styled, { css } from 'styled-components';
 
 import type { Product } from '@/types/product';
 import { formatPrice } from '@/utils';
@@ -12,6 +13,117 @@ interface ProductItemProps {
   onRemove: (product: Product) => void;
 }
 
+const Row = styled.tr<{ $selected?: boolean }>`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[100]};
+  &:hover {
+    background: rgba(249, 250, 251, 0.5);
+  }
+  ${({ $selected, theme }) =>
+    $selected &&
+    css`
+      background: rgba(239, 246, 255, 0.3);
+      border-left: 4px solid ${theme.colors.blue[600]};
+    `}
+`;
+
+const Td = styled.td`
+  padding: 0.75rem 1rem;
+`;
+
+const TdSm = styled(Td)`
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.grey[600]};
+`;
+
+const TitleCell = styled.div`
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.grey[900]};
+`;
+
+const Category = styled.div`
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: ${({ theme }) => theme.colors.grey[500]};
+`;
+
+const Checkbox = styled.input`
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-color: ${({ theme }) => theme.colors.grey[300]};
+`;
+
+const Rating = styled.span<{ $low?: boolean }>`
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  font-weight: ${({ $low }) => ($low ? 500 : 400)};
+  color: ${({ theme, $low }) => ($low ? theme.colors.red[600] : theme.colors.grey[600])};
+`;
+
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
+const IconBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  color: ${({ theme }) => theme.colors.blue[600]};
+  cursor: pointer;
+  &:hover {
+    background: ${({ theme }) => theme.colors.blue[50]};
+  }
+`;
+
+const MenuBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  color: ${({ theme }) => theme.colors.grey[400]};
+  cursor: pointer;
+  &:hover {
+    background: ${({ theme }) => theme.colors.grey[100]};
+  }
+`;
+
+const DropdownContent = styled(DropdownMenu.Content)`
+  min-width: 10rem;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  background: #fff;
+  padding: 0.25rem 0;
+  box-shadow: ${({ theme }) => theme.shadow.lg};
+  border: 1px solid ${({ theme }) => theme.colors.grey[200]};
+`;
+
+const MenuItem = styled(DropdownMenu.Item)`
+  padding: 0.5rem 0.75rem;
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.grey[700]};
+  cursor: pointer;
+  outline: none;
+  &:hover {
+    background: ${({ theme }) => theme.colors.grey[100]};
+  }
+`;
+
+const MenuItemDanger = styled(DropdownMenu.Item)`
+  padding: 0.5rem 0.75rem;
+  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
+  color: ${({ theme }) => theme.colors.red[600]};
+  cursor: pointer;
+  outline: none;
+  &:hover {
+    background: ${({ theme }) => theme.colors.red[50]};
+  }
+`;
+
 export function ProductItem({
   product,
   isSelected,
@@ -21,101 +133,55 @@ export function ProductItem({
   onRemove,
 }: ProductItemProps) {
   return (
-    <tr
-      className={`border-b border-gray-100 hover:bg-gray-50/50 ${isSelected ? 'bg-blue-50/30 border-l-4 border-l-blue-600' : ''
-        }`}
-    >
-      <td className="px-4 py-3">
-        <input
+    <Row $selected={isSelected}>
+      <Td>
+        <Checkbox
           type="checkbox"
-          className="rounded border-gray-300"
           checked={isSelected}
           onChange={() => onToggleSelect(product.id)}
         />
-      </td>
-      <td className="px-4 py-3">
+      </Td>
+      <Td>
         <div>
-          <div className="font-medium text-gray-900">{product.title}</div>
-          {product.category && (
-            <div className="text-xs text-gray-500">{product.category}</div>
-          )}
+          <TitleCell>{product.title}</TitleCell>
+          {product.category && <Category>{product.category}</Category>}
         </div>
-      </td>
-      <td className="px-4 py-3 text-sm text-gray-600">
-        {product.brand ?? product.vendor ?? '-'}
-      </td>
-      <td className="px-4 py-3 text-sm text-gray-600">
-        {product.sku ?? '-'}
-      </td>
-      <td className="px-4 py-3 text-sm">
-        <span
-          className={
-            product.rating < 3 ? 'text-red-600 font-medium' : 'text-gray-600'
-          }
-        >
-          {product.rating.toFixed(1)}/5
-        </span>
-      </td>
-      <td className="px-4 py-3 text-sm text-gray-600">
-        {formatPrice(product.price)}
-      </td>
-      <td className="px-4 py-3">
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            className="p-2 rounded-full text-blue-600 hover:bg-blue-50"
-            title="Дублировать"
-            onClick={() => onDuplicate(product)}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      </Td>
+      <TdSm>{product.brand ?? product.vendor ?? '-'}</TdSm>
+      <TdSm>{product.sku ?? '-'}</TdSm>
+      <TdSm>
+        <Rating $low={product.rating < 3}>{product.rating.toFixed(1)}/5</Rating>
+      </TdSm>
+      <TdSm>{formatPrice(product.price)}</TdSm>
+      <Td>
+        <Actions>
+          <IconBtn type="button" title="Дублировать" onClick={() => onDuplicate(product)}>
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
-          </button>
+          </IconBtn>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-              <button
-                type="button"
-                className="p-2 rounded-full text-gray-400 hover:bg-gray-100"
-                title="Ещё"
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <MenuBtn type="button" title="Ещё">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                   <circle cx="12" cy="6" r="1.5" />
                   <circle cx="12" cy="12" r="1.5" />
                   <circle cx="12" cy="18" r="1.5" />
                 </svg>
-              </button>
+              </MenuBtn>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                className="min-w-[160px] rounded-lg bg-white py-1 shadow-lg border border-gray-200"
-                align="end"
-                sideOffset={4}
-              >
-                <DropdownMenu.Item
-                  className="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer outline-none"
-                  onSelect={() => onEdit(product)}
-                >
-                  Редактировать
-                </DropdownMenu.Item>
-                <DropdownMenu.Item
-                  className="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer outline-none"
-                  onSelect={() => onDuplicate(product)}
-                >
-                  Дублировать
-                </DropdownMenu.Item>
+              <DropdownContent align="end" sideOffset={4}>
+                <MenuItem onSelect={() => onEdit(product)}>Редактировать</MenuItem>
+                <MenuItem onSelect={() => onDuplicate(product)}>Дублировать</MenuItem>
                 {product.isLocal && (
-                  <DropdownMenu.Item
-                    className='px-3 py-2 text-red-600 hover:bg-red-50 cursor-pointer'
-                    onSelect={() => onRemove(product)}
-                  >
-                    Удалить
-                  </DropdownMenu.Item>
+                  <MenuItemDanger onSelect={() => onRemove(product)}>Удалить</MenuItemDanger>
                 )}
-              </DropdownMenu.Content>
+              </DropdownContent>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
-        </div>
-      </td>
-    </tr>
+        </Actions>
+      </Td>
+    </Row>
   );
 }
