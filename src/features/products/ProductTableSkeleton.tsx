@@ -14,7 +14,6 @@ const Table = styled.table`
 
 const Th = styled.th`
   padding: 0.75rem 1rem;
-  text-align: left;
 `;
 
 const TheadRow = styled.tr`

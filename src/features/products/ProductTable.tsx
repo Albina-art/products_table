@@ -9,6 +9,7 @@ import { ProductForm } from './ProductForm';
 import { ProductItem } from './ProductItem';
 import * as S from './ProductTable.styles';
 import { ProductTableSkeleton } from './ProductTableSkeleton';
+import { usePaginationWindow } from './usePaginationWindow';
 import { useProductsQuery } from './useProductsQuery';
 import { useProductStore } from './useProductStore';
 
@@ -18,15 +19,17 @@ function SortHeader({
   sortKey,
   sortOrder,
   onSort,
+  isLeftTextAlign
 }: {
   colKey: keyof Product | string;
   label: string;
   sortKey: keyof Product | string | null;
   sortOrder: 'asc' | 'desc';
   onSort: (key: keyof Product) => void;
+  isLeftTextAlign?: boolean;
 }) {
   return (
-    <S.SortBtn type="button" onClick={() => onSort(colKey as keyof Product)}>
+    <S.SortBtn type="button" onClick={() => onSort(colKey as keyof Product)} $isLeftTextAlign={isLeftTextAlign}>
       {label}
       {sortKey === colKey && <S.SortArrow>{sortOrder === 'asc' ? ' ↑' : ' ↓'}</S.SortArrow>}
     </S.SortBtn>
@@ -98,8 +101,10 @@ export function ProductTable() {
 
   const total = (data?.total ?? 0) + addedProducts.length;
   const totalPages = Math.ceil(total / limit) || 1;
-  const start = (page - 1) * limit + 1;
+  const start = total === 0 ? 0 : (page - 1) * limit + 1;
   const end = Math.min(page * limit, total);
+
+  const { visiblePageNumbers } = usePaginationWindow({ page, totalPages, setPage });
 
   const isAllSelected = selectedIds.length === products.length;
 
@@ -111,12 +116,29 @@ export function ProductTable() {
     }
   }, [isAllSelected, products, deselect, toggleSelect]);
 
+  const handleToggleSelect = (id: number) => {
+    const ids = [id];
+    if (selectedIds.includes(id)) {
+      deselect(ids);
+    } else {
+      toggleSelect(ids);
+    }
+  };
+
   if (isLoading) {
     return <ProductTableSkeleton />;
   }
 
   if (error) {
     return <S.ErrorText>Ошибка загрузки: {String(error)}</S.ErrorText>;
+  }
+
+  if (totalPages === 0) {
+    return (
+      <div>
+        <S.EmptyText>Нет данных</S.EmptyText>
+      </div>
+    );
   }
 
   return (
@@ -139,6 +161,7 @@ export function ProductTable() {
                 sortKey={sortKey}
                 sortOrder={sortOrder}
                 onSort={setSort}
+                isLeftTextAlign
               />
             </S.Th>
             <S.Th>
@@ -186,7 +209,7 @@ export function ProductTable() {
               key={product.id}
               product={product}
               isSelected={selectedIds.includes(product.id)}
-              onToggleSelect={() => toggleSelect([product.id])}
+              onToggleSelect={() => handleToggleSelect(product.id)}
               onDuplicate={handleDuplicate}
               onEdit={handleEdit}
               onRemove={handleRemove}
@@ -213,7 +236,7 @@ export function ProductTable() {
           <S.PageBtn type="button" disabled={page <= 1} onClick={() => setPage(page - 1)}>
             <IconChevronLeft />
           </S.PageBtn>
-          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + 1).map((p) => (
+          {visiblePageNumbers.map((p) => (
             <S.PageNum key={p} type="button" $active={p === page} onClick={() => setPage(p)}>
               {p}
             </S.PageNum>

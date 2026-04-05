@@ -11,9 +11,6 @@ export const theme = {
     primary: {
       DEFAULT: '#242EDB',
       light: '#367AFF',
-      deep: '#3C538E',
-      dark: '#202020',
-      darker: '#161919',
     },
     grey: {
       25: '#F9F9F9',
@@ -27,18 +24,18 @@ export const theme = {
       400: '#B2B3B9',
       500: '#9C9C9C',
       600: '#999999',
+      650: '#515161',
       700: '#333333',
       800: '#232323',
       900: '#222222',
-    },
-    second: {
-      DEFAULT: '#515161',
-      muted: '#969B9F',
+      950: '#161919'
     },
     blue: {
       50: '#eff6ff',
       100: '#367AFF',
+      300: '#797FEA',
       500: '#3b82f6',
+      550: '#3C538E',
       600: '#2563eb',
       700: '#1d4ed8',
     },
@@ -61,11 +58,10 @@ export const theme = {
   typography: {
     display: { fontSize: '40px', lineHeight: '110%', fontWeight: fontWeight.semibold },
     title: { fontSize: '24px', lineHeight: '120%', fontWeight: fontWeight.bold },
-    subtitle: { fontSize: '20px', lineHeight: '120%' },
+    subtitle: { fontSize: '20px' },
     lead: { fontSize: '18px', lineHeight: '150%', fontWeight: fontWeight.medium },
     body: { fontSize: '16px', lineHeight: '150%' },
     bodySm: { fontSize: '14px', lineHeight: '150%' },
-    caption: { fontSize: '14px', lineHeight: '120%' },
   },
   shadow: {
     logo: '0 12px 8px 0 rgba(0, 0, 0, 0.03)',

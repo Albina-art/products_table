@@ -1,8 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const SortBtn = styled.button`
+export const SortBtn = styled.button<{ $isLeftTextAlign?: boolean }>`
   display: flex;
   align-items: center;
+  margin: ${({ $isLeftTextAlign }) => ($isLeftTextAlign ? 0 : '0 auto')};
   gap: 0.25rem;
   border: none;
   background: none;
@@ -46,10 +47,12 @@ export const StyledTable = styled.table`
 `;
 
 export const Th = styled.th<{ $narrow?: boolean }>`
-  padding: 0.75rem 1rem;
-  text-align: left;
+  padding: 25.5px 2px 25.5px 18px;
+  text-align: center;
   font-weight: inherit;
   width: ${({ $narrow }) => ($narrow ? '3rem' : 'auto')};
+  max-width: max-content;
+  flex-direction: column;
 `;
 
 export const TheadRow = styled.tr`
@@ -57,6 +60,13 @@ export const TheadRow = styled.tr`
 `;
 
 export { Checkbox } from './ProductCheckbox.styles';
+
+export const EmptyText = styled.p`
+  padding: 2rem 0;
+  color: ${({ theme }) => theme.colors.grey[400]};
+  text-align: center;
+  font-size: ${({ theme }) => theme.typography.body.fontSize};
+`;
 
 export const ErrorText = styled.p`
   padding: 2rem 0;
@@ -103,16 +113,19 @@ export const PageBtn = styled.button`
 `;
 
 export const PageNum = styled.button<{ $active?: boolean }>`
-  min-width: 2rem;
-  height: 2rem;
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  cursor: pointer;
-  background: ${({ theme, $active }) => ($active ? theme.colors.blue[600] : 'transparent')};
-  color: ${({ theme, $active }) => ($active ? '#fff' : theme.colors.grey[600])};
-  &:hover {
-    background: ${({ theme, $active }) => ($active ? theme.colors.blue[600] : theme.colors.grey[200])};
+  min-width: 30px;
+  height: 30px;
+  ${({ theme, $active }) => css`
+    border: 1px solid ${$active ? theme.colors.blue[300] : theme.colors.grey[50]};
+    border-radius: ${theme.borderRadius.xxs};
+    font-size: ${theme.typography.bodySm.fontSize};
+    font-weight: ${theme.fontWeight.medium};
+    cursor: pointer;
+    background: ${($active ? theme.colors.blue[300] : 'transparent')};
+    color: ${($active ? '#fff' : theme.colors.grey[400])};
+    &:hover {
+      background: ${($active ? theme.colors.blue[500] : theme.colors.grey[200])};
+    }
   }
+  `}
 `;

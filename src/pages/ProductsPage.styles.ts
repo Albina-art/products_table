@@ -144,7 +144,7 @@ export const IconButton = styled.button`
   background: none;
   border: 1px solid ${({ theme }) => theme.colors.grey[50]};
   border-radius: ${({ theme }) => theme.borderRadius.sm};
-  color: ${({ theme }) => theme.colors.second.DEFAULT};
+  color: ${({ theme }) => theme.colors.grey[650]};
   cursor: pointer;
   &:hover {
     background: ${({ theme }) => theme.colors.grey[100]};
@@ -156,5 +156,5 @@ export const AddButton = styled(Button)`
   gap: 15px;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   border-radius: ${({ theme }) => theme.borderRadius.xs};
-  ${({ theme }) => theme.typography.caption};
+  ${({ theme }) => theme.typography.bodySm};
 `;

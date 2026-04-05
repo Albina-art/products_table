@@ -2,18 +2,23 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 import { IconDots, IconPlus } from '@/components/icons';
 import type { Product } from '@/types/product';
-import { formatPrice } from '@/utils';
 
 import * as S from './ProductItem.styles';
 
 interface ProductItemProps {
   product: Product;
   isSelected: boolean;
-  onToggleSelect: (id: number) => void;
+  onToggleSelect: () => void;
   onDuplicate: (product: Product) => void;
   onEdit: (product: Product) => void;
   onRemove: (product: Product) => void;
 }
+
+const getPriceFractional = (price: number) => {
+  const num = price - Math.trunc(price);
+  return num.toFixed(2).split('.')[1];
+};
+
 
 export function ProductItem({
   product,
@@ -23,23 +28,32 @@ export function ProductItem({
   onEdit,
   onRemove,
 }: ProductItemProps) {
+  const rowSelectId = `product-row-select-${product.id}`;
+
   return (
     <S.Row $selected={isSelected}>
       <S.Td>
-        <S.Checkbox checked={isSelected} onChange={() => onToggleSelect(product.id)} />
+        <S.Checkbox id={rowSelectId} checked={isSelected} onChange={onToggleSelect} />
       </S.Td>
       <S.Td>
-        <div>
+        <S.TitleLabel htmlFor={rowSelectId}>
           <S.TitleCell>{product.title}</S.TitleCell>
           {product.category && <S.Category>{product.category}</S.Category>}
-        </div>
+        </S.TitleLabel>
       </S.Td>
-      <S.TdSm>{product.brand ?? product.vendor ?? '-'}</S.TdSm>
-      <S.TdSm>{product.sku ?? '-'}</S.TdSm>
+      <S.TdSm>
+        <S.Vendor>{product.brand ?? product.vendor ?? '-'}</S.Vendor>
+      </S.TdSm>
+      <S.TdSm>
+        {product.sku ?? '-'}
+      </S.TdSm>
       <S.TdSm>
         <S.Rating $low={product.rating < 3}>{product.rating.toFixed(1)}/5</S.Rating>
       </S.TdSm>
-      <S.TdSm>{formatPrice(product.price)}</S.TdSm>
+      <S.TdSm>
+        <S.Price>{Math.trunc(product.price).toLocaleString('ru-RU')}</S.Price>
+        <S.PriceFractional>,{getPriceFractional(product.price)}</S.PriceFractional>
+      </S.TdSm>
       <S.Td>
         <S.Actions>
           <S.IconBtn type="button" title="Дублировать" onClick={() => onDuplicate(product)}>
