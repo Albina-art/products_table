@@ -7,8 +7,15 @@ const Wrap = styled.div`
   overflow: hidden;
 `;
 
+const Scroll = styled.div`
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+`;
+
 const Table = styled.table`
   width: 100%;
+  min-width: max-content;
   border-collapse: collapse;
 `;
 
@@ -49,64 +56,66 @@ const Flex = styled.div`
 export function ProductTableSkeleton() {
   return (
     <Wrap>
-      <Table>
-        <thead>
-          <TheadRow>
-            <Th style={{ width: '3rem' }}>
-              <SkeletonBlock className="skeleton" $w="1rem" $round />
-            </Th>
-            <Th>
-              <SkeletonBlock className="skeleton" $w="6rem" />
-            </Th>
-            <Th>
-              <SkeletonBlock className="skeleton" $w="4rem" />
-            </Th>
-            <Th>
-              <SkeletonBlock className="skeleton" $w="4rem" />
-            </Th>
-            <Th>
-              <SkeletonBlock className="skeleton" $w="3.5rem" />
-            </Th>
-            <Th>
-              <SkeletonBlock className="skeleton" $w="4rem" />
-            </Th>
-            <Th style={{ width: '6rem' }} />
-          </TheadRow>
-        </thead>
-        <tbody>
-          {Array.from({ length: SKELETON_ROWS }).map((_, i) => (
-            <Tr key={i}>
-              <Td>
+      <Scroll>
+        <Table>
+          <thead>
+            <TheadRow>
+              <Th style={{ width: '3rem' }}>
                 <SkeletonBlock className="skeleton" $w="1rem" $round />
-              </Td>
-              <Td>
-                <Stack>
-                  <SkeletonBlock className="skeleton" $w="200px" />
-                  <SkeletonBlock className="skeleton" $w="120px" $h="0.75rem" />
-                </Stack>
-              </Td>
-              <Td>
-                <SkeletonBlock className="skeleton" $w="5rem" />
-              </Td>
-              <Td>
+              </Th>
+              <Th>
                 <SkeletonBlock className="skeleton" $w="6rem" />
-              </Td>
-              <Td>
-                <SkeletonBlock className="skeleton" $w="3rem" />
-              </Td>
-              <Td>
+              </Th>
+              <Th>
                 <SkeletonBlock className="skeleton" $w="4rem" />
-              </Td>
-              <Td>
-                <Flex>
-                  <SkeletonBlock className="skeleton" $w="2rem" $h="2rem" $round />
-                  <SkeletonBlock className="skeleton" $w="2rem" $h="2rem" $round />
-                </Flex>
-              </Td>
-            </Tr>
-          ))}
-        </tbody>
-      </Table>
+              </Th>
+              <Th>
+                <SkeletonBlock className="skeleton" $w="4rem" />
+              </Th>
+              <Th>
+                <SkeletonBlock className="skeleton" $w="3.5rem" />
+              </Th>
+              <Th>
+                <SkeletonBlock className="skeleton" $w="4rem" />
+              </Th>
+              <Th style={{ width: '6rem' }} />
+            </TheadRow>
+          </thead>
+          <tbody>
+            {Array.from({ length: SKELETON_ROWS }).map((_, i) => (
+              <Tr key={i}>
+                <Td>
+                  <SkeletonBlock className="skeleton" $w="1rem" $round />
+                </Td>
+                <Td>
+                  <Stack>
+                    <SkeletonBlock className="skeleton" $w="200px" />
+                    <SkeletonBlock className="skeleton" $w="120px" $h="0.75rem" />
+                  </Stack>
+                </Td>
+                <Td>
+                  <SkeletonBlock className="skeleton" $w="5rem" />
+                </Td>
+                <Td>
+                  <SkeletonBlock className="skeleton" $w="6rem" />
+                </Td>
+                <Td>
+                  <SkeletonBlock className="skeleton" $w="3rem" />
+                </Td>
+                <Td>
+                  <SkeletonBlock className="skeleton" $w="4rem" />
+                </Td>
+                <Td>
+                  <Flex>
+                    <SkeletonBlock className="skeleton" $w="2rem" $h="2rem" $round />
+                    <SkeletonBlock className="skeleton" $w="2rem" $h="2rem" $round />
+                  </Flex>
+                </Td>
+              </Tr>
+            ))}
+          </tbody>
+        </Table>
+      </Scroll>
     </Wrap>
   );
 }

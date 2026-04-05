@@ -28,6 +28,13 @@ export const TableWrap = styled.div`
   overflow: hidden;
 `;
 
+export const TableScroll = styled.div`
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+`;
+
 export const FetchingBar = styled.div`
   position: absolute;
   top: 0;
@@ -42,6 +49,7 @@ export const FetchingBar = styled.div`
 
 export const StyledTable = styled.table`
   width: 100%;
+  min-width: max-content;
   border-collapse: collapse;
   font-family: ${({ theme }) => theme.fonts.robotoMono};
 `;

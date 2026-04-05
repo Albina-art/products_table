@@ -148,75 +148,77 @@ export function ProductTable() {
           <div className="progress-bar-fill" style={{ height: '100%', minHeight: 4 }} />
         </S.FetchingBar>
       )}
-      <S.StyledTable>
-        <thead>
-          <S.TheadRow>
-            <S.Th $narrow>
-              <S.Checkbox checked={isAllSelected} onChange={toggleSelectAll} />
-            </S.Th>
-            <S.Th>
-              <SortHeader
-                colKey="title"
-                label="Наименование"
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                onSort={setSort}
-                isLeftTextAlign
+      <S.TableScroll>
+        <S.StyledTable>
+          <thead>
+            <S.TheadRow>
+              <S.Th $narrow>
+                <S.Checkbox checked={isAllSelected} onChange={toggleSelectAll} />
+              </S.Th>
+              <S.Th>
+                <SortHeader
+                  colKey="title"
+                  label="Наименование"
+                  sortKey={sortKey}
+                  sortOrder={sortOrder}
+                  onSort={setSort}
+                  isLeftTextAlign
+                />
+              </S.Th>
+              <S.Th>
+                <SortHeader
+                  colKey="brand"
+                  label="Вендор"
+                  sortKey={sortKey}
+                  sortOrder={sortOrder}
+                  onSort={setSort}
+                />
+              </S.Th>
+              <S.Th>
+                <SortHeader
+                  colKey="sku"
+                  label="Артикул"
+                  sortKey={sortKey}
+                  sortOrder={sortOrder}
+                  onSort={setSort}
+                />
+              </S.Th>
+              <S.Th>
+                <SortHeader
+                  colKey="rating"
+                  label="Оценка"
+                  sortKey={sortKey}
+                  sortOrder={sortOrder}
+                  onSort={setSort}
+                />
+              </S.Th>
+              <S.Th>
+                <SortHeader
+                  colKey="price"
+                  label="Цена, ₽"
+                  sortKey={sortKey}
+                  sortOrder={sortOrder}
+                  onSort={setSort}
+                />
+              </S.Th>
+              <S.Th style={{ width: '6rem' }} />
+            </S.TheadRow>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                isSelected={selectedIds.includes(product.id)}
+                onToggleSelect={() => handleToggleSelect(product.id)}
+                onDuplicate={handleDuplicate}
+                onEdit={handleEdit}
+                onRemove={handleRemove}
               />
-            </S.Th>
-            <S.Th>
-              <SortHeader
-                colKey="brand"
-                label="Вендор"
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                onSort={setSort}
-              />
-            </S.Th>
-            <S.Th>
-              <SortHeader
-                colKey="sku"
-                label="Артикул"
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                onSort={setSort}
-              />
-            </S.Th>
-            <S.Th>
-              <SortHeader
-                colKey="rating"
-                label="Оценка"
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                onSort={setSort}
-              />
-            </S.Th>
-            <S.Th>
-              <SortHeader
-                colKey="price"
-                label="Цена, ₽"
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-                onSort={setSort}
-              />
-            </S.Th>
-            <S.Th style={{ width: '6rem' }} />
-          </S.TheadRow>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              isSelected={selectedIds.includes(product.id)}
-              onToggleSelect={() => handleToggleSelect(product.id)}
-              onDuplicate={handleDuplicate}
-              onEdit={handleEdit}
-              onRemove={handleRemove}
-            />
-          ))}
-        </tbody>
-      </S.StyledTable>
+            ))}
+          </tbody>
+        </S.StyledTable>
+      </S.TableScroll>
 
       <Modal
         isOpen={!!editingProduct}
