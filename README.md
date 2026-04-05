@@ -2,6 +2,8 @@
 
 SPA на React и TypeScript: вход через [DummyJSON Auth](https://dummyjson.com/docs/auth), таблица товаров с [DummyJSON Products](https://dummyjson.com/docs/products), поиск, сортировка, локальное добавление и правка строк (без POST на API).
 
+**Демо (Vercel):** [https://products-table-tau.vercel.app](https://products-table-tau.vercel.app)
+
 ## Установка и скрипты
 
 ```bash
