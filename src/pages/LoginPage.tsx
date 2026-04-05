@@ -10,7 +10,7 @@ export function LoginPage() {
         <S.Card>
           <S.Content>
             <S.Header>
-              <S.Logo src={logo} alt="Logo" width={52} height={52} />
+              <S.Logo src={logo} alt="Logo" width={56} height={56} />
               <S.Title>Добро пожаловать!</S.Title>
               <S.GradientText text="Пожалуйста, авторизируйтесь" width="272px" height="27px" fontSize="18px" />
             </S.Header>

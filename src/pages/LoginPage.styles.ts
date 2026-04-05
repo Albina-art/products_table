@@ -79,6 +79,7 @@ export const Logo = styled.img`
   border-radius: 50%;
   box-shadow: ${({ theme }) => theme.shadow.logo};
   margin-bottom: 32px;
+  border: 2px solid white;
 `;
 
 export const Title = styled.h1`
