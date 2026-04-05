@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { IconClose } from '@/components/icons';
 
 export interface ToastItem {
   id: string;
@@ -52,15 +54,17 @@ const Message = styled.span`
 const CloseBtn = styled.button`
   border: none;
   background: none;
-  padding: 0.5rem;
-  color: ${({ theme }) => theme.colors.grey[400]};
-  cursor: pointer;
-  font-size: ${({ theme }) => theme.typography.bodySm.fontSize};
   line-height: 1;
-  &:hover {
-    background: ${({ theme }) => theme.colors.grey[100]};
-    color: ${({ theme }) => theme.colors.grey[600]};
-  }
+  padding: 4px;
+  color: #fff;
+  cursor: pointer;
+  ${({ theme }) => css`
+    border-radius: ${theme.borderRadius.lg};
+    background-color: ${theme.colors.primary.DEFAULT};
+    &:hover {
+      background-color: ${theme.colors.primary.light};
+    }
+  `}
 `;
 
 export function Toast({ toasts, onDismiss }: ToastProps) {
@@ -70,7 +74,7 @@ export function Toast({ toasts, onDismiss }: ToastProps) {
         <ToastBox key={toast.id} role="alert" $type={toast.type ?? 'info'}>
           <Message>{toast.message}</Message>
           <CloseBtn type="button" onClick={() => onDismiss(toast.id)} aria-label="Закрыть">
-            ×
+            <IconClose />
           </CloseBtn>
         </ToastBox>
       ))}

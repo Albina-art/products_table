@@ -2,6 +2,8 @@ import * as Dialog from '@radix-ui/react-dialog';
 import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
+import { IconClose } from '../icons';
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,7 +27,7 @@ const StyledContent = styled(Dialog.Content)`
   transform: translate(-50%, -50%);
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   background: #fff;
-  padding: 1.5rem;
+  padding: 48px;
   box-shadow: ${({ theme }) => theme.shadow.xl};
 `;
 
@@ -62,12 +64,12 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <Dialog.Portal>
         <StyledOverlay />
-        <StyledContent onPointerDownOutside={onClose}>
+        <StyledContent aria-describedby={undefined} onPointerDownOutside={onClose}>
           <Header>
             {title ? <Title>{title}</Title> : <span />}
             <Dialog.Close asChild>
               <CloseBtn type="button" aria-label="Закрыть">
-                ×
+                <IconClose />
               </CloseBtn>
             </Dialog.Close>
           </Header>

@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import type { IconProps } from './types';
 
-export const IconClear = forwardRef<SVGSVGElement, IconProps>(function IconClear(
+export const IconClose = forwardRef<SVGSVGElement, IconProps>(function IconClose(
   { size = 17, ...props },
   ref
 ) {

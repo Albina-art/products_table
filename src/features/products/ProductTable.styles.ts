@@ -36,7 +36,7 @@ export const FetchingBar = styled.div`
   background: ${({ theme }) => theme.colors.grey[100]};
   overflow: hidden;
   border-radius: ${({ theme }) => theme.borderRadius.lg} ${({ theme }) => theme.borderRadius.lg} 0 0;
-  z-index: 10;
+  z-index: 2;
 `;
 
 export const StyledTable = styled.table`
@@ -53,8 +53,7 @@ export const Th = styled.th<{ $narrow?: boolean }>`
 `;
 
 export const TheadRow = styled.tr`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[200]};
-  background: rgba(249, 250, 251, 0.5);
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[150]};
 `;
 
 export { Checkbox } from './ProductCheckbox.styles';
@@ -69,7 +68,7 @@ export const Pagination = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  border-top: 1px solid ${({ theme }) => theme.colors.grey[150]};
   background: rgba(249, 250, 251, 0.3);
 `;
 

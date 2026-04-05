@@ -171,7 +171,7 @@ export function ProductTable() {
             <S.Th>
               <SortHeader
                 colKey="price"
-                label="Цена, P"
+                label="Цена, ₽"
                 sortKey={sortKey}
                 sortOrder={sortOrder}
                 onSort={setSort}

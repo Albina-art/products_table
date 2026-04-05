@@ -2,7 +2,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import styled, { css } from 'styled-components';
 
 export const Row = styled.tr<{ $selected?: boolean }>`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey[100]};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.grey[150]};
   &:hover {
     background: rgba(249, 250, 251, 0.5);
   }
@@ -45,29 +45,31 @@ export const Rating = styled.span<{ $low?: boolean }>`
 export const Actions = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 28px;
 `;
 
 export const IconBtn = styled.button`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 1.5px 14px;
   border: none;
-  background: none;
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-  color: ${({ theme }) => theme.colors.blue[600]};
-  cursor: pointer;
-  &:hover {
-    background: ${({ theme }) => theme.colors.blue[50]};
-  }
+  ${({ theme }) => css`
+    border-radius: ${theme.borderRadius.lg};
+    background-color: ${theme.colors.primary.DEFAULT};
+    color: #fff;
+    &:hover {
+      background-color: ${theme.colors.primary.light};
+    }
+  `}
 `;
 
 export const MenuBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 4px;
   border: none;
   background: none;
   border-radius: ${({ theme }) => theme.borderRadius.full};
@@ -79,12 +81,13 @@ export const MenuBtn = styled.button`
 `;
 
 export const DropdownContent = styled(DropdownMenu.Content)`
-  min-width: 10rem;
+  min-width: 135px;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   background: #fff;
-  padding: 0.25rem 0;
+  padding: 12px 0;
   box-shadow: ${({ theme }) => theme.shadow.lg};
   border: 1px solid ${({ theme }) => theme.colors.grey[200]};
+  overflow: hidden;
 `;
 
 export const MenuItem = styled(DropdownMenu.Item)`

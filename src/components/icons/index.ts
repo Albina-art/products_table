@@ -1,8 +1,8 @@
 export { IconCheckbox } from './IconCheckbox';
 export { IconChevronLeft } from './IconChevronLeft';
 export { IconChevronRight } from './IconChevronRight';
-export { IconClear } from './IconClear';
-export { IconDotsVertical } from './IconDotsVertical';
+export { IconClose } from './IconClose';
+export { IconDots } from './IconDots';
 export { IconEyeHidden } from './IconEyeHidden';
 export { IconEyeVisible } from './IconEyeVisible';
 export { IconLock } from './IconLock';

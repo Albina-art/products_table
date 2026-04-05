@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { type SubmitEventHandler,useState } from 'react';
 import styled from 'styled-components';
 
 import { Button } from '@/components/Button';
@@ -18,6 +18,26 @@ interface ProductFormProps {
   onSuccess: () => void;
 }
 
+function validateProductForm(title: string, price: string, vendor: string, sku: string) {
+  const titleError = !title.trim() ? 'Введите наименование' : undefined;
+
+  const priceTrim = price.trim();
+  let priceError: string | undefined;
+  if (!priceTrim) {
+    priceError = 'Введите цену';
+  } else {
+    const n = Number(price);
+    if (!Number.isFinite(n) || n < 0) {
+      priceError = 'Укажите корректную цену';
+    }
+  }
+
+  const vendorError = !vendor.trim() ? 'Введите вендора' : undefined;
+  const skuError = !sku.trim() ? 'Введите артикул' : undefined;
+
+  return { titleError, priceError, vendorError, skuError };
+}
+
 export function ProductForm({ initialProduct, onSuccess }: ProductFormProps) {
   const [title, setTitle] = useState(initialProduct?.title ?? '');
   const [price, setPrice] = useState(
@@ -28,12 +48,34 @@ export function ProductForm({ initialProduct, onSuccess }: ProductFormProps) {
   );
   const [sku, setSku] = useState(initialProduct?.sku ?? '');
 
+  const [titleError, setTitleError] = useState<string | undefined>();
+  const [priceError, setPriceError] = useState<string | undefined>();
+  const [vendorError, setVendorError] = useState<string | undefined>();
+  const [skuError, setSkuError] = useState<string | undefined>();
+
   const addProduct = useProductStore((s) => s.addProduct);
   const updateProduct = useProductStore((s) => s.updateProduct);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const product: Product = {
+    setTitleError(undefined);
+    setPriceError(undefined);
+    setVendorError(undefined);
+    setSkuError(undefined);
+
+    const { titleError: currentTitleError, priceError: currentPriceError, vendorError: currentVendorError, skuError: currentSkuError } =
+      validateProductForm(title, price, vendor, sku);
+
+    if (currentTitleError) setTitleError(currentTitleError);
+    if (currentPriceError) setPriceError(currentPriceError);
+    if (currentVendorError) setVendorError(currentVendorError);
+    if (currentSkuError) setSkuError(currentSkuError);
+
+    if (currentTitleError || currentPriceError || currentVendorError || currentSkuError) {
+      return;
+    }
+
+    const newProduct: Product = {
       ...(initialProduct ?? {
         id: Date.now(),
         description: '',
@@ -52,25 +94,56 @@ export function ProductForm({ initialProduct, onSuccess }: ProductFormProps) {
       sku: sku.trim(),
       isLocal: initialProduct ? initialProduct.isLocal : true,
     };
+
     if (initialProduct) {
-      updateProduct(product);
+      updateProduct(newProduct);
     } else {
-      addProduct(product);
+      addProduct(newProduct);
     }
     onSuccess();
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate>
       <Input
         label="Наименование"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
+        error={titleError}
+        onChange={(e) => {
+          setTitle(e.target.value);
+          setTitleError(undefined);
+        }}
       />
-      <Input label="Цена" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
-      <Input label="Вендор" value={vendor} onChange={(e) => setVendor(e.target.value)} />
-      <Input label="Артикул" value={sku} onChange={(e) => setSku(e.target.value)} />
+      <Input
+        label="Цена"
+        type="number"
+        min={0}
+        step="any"
+        value={price}
+        error={priceError}
+        onChange={(e) => {
+          setPrice(e.target.value);
+          setPriceError(undefined);
+        }}
+      />
+      <Input
+        label="Вендор"
+        value={vendor}
+        error={vendorError}
+        onChange={(e) => {
+          setVendor(e.target.value);
+          setVendorError(undefined);
+        }}
+      />
+      <Input
+        label="Артикул"
+        value={sku}
+        error={skuError}
+        onChange={(e) => {
+          setSku(e.target.value);
+          setSkuError(undefined);
+        }}
+      />
       <Button type="submit">{initialProduct ? 'Сохранить' : 'Добавить'}</Button>
     </Form>
   );

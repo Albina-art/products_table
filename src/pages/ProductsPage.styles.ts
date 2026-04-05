@@ -107,6 +107,8 @@ export const LogoutButton = styled(Button)`
 export const Main = styled.main`
   background-color: #fff;
   padding: 30px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 
 export const SectionHead = styled.div`
@@ -118,9 +120,11 @@ export const SectionHead = styled.div`
 
 export const SectionTitle = styled.h2`
   margin: 0;
-  ${({ theme }) => theme.typography.subtitle}
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.grey[700]};
+  ${({ theme }) => css`
+    font-size: ${theme.typography.subtitle.fontSize};
+    font-weight: ${theme.fontWeight.semibold};
+    color: ${theme.colors.grey[700]};
+  `}
 `;
 
 export const Toolbar = styled.div`

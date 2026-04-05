@@ -1,6 +1,6 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
-import { IconDotsVertical, IconPlus } from '@/components/icons';
+import { IconDots, IconPlus } from '@/components/icons';
 import type { Product } from '@/types/product';
 import { formatPrice } from '@/utils';
 
@@ -43,12 +43,12 @@ export function ProductItem({
       <S.Td>
         <S.Actions>
           <S.IconBtn type="button" title="Дублировать" onClick={() => onDuplicate(product)}>
-            <IconPlus size={16} />
+            <IconPlus />
           </S.IconBtn>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <S.MenuBtn type="button" title="Ещё">
-                <IconDotsVertical size={16} />
+                <IconDots />
               </S.MenuBtn>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>

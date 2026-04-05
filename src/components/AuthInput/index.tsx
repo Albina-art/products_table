@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes } from 'react';
 import { useState } from 'react';
 
-import { IconClear, IconEyeHidden, IconEyeVisible } from '@/components/icons';
+import { IconClose, IconEyeHidden, IconEyeVisible } from '@/components/icons';
 
 import * as S from './AuthInput.styles';
 
@@ -53,7 +53,7 @@ export function AuthInput({
           <S.Trailing>
             {showClear && value && (
               <S.IconButton type="button" onClick={onClear} aria-label="Очистить">
-                <IconClear />
+                <IconClose />
               </S.IconButton>
             )}
             {showPasswordToggle && (
