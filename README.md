@@ -45,7 +45,3 @@ npm run lint     # ESLint
 - `features/ui` — toast
 - `components/` — переиспользуемые UI-компоненты
 - `pages/` — `LoginPage`, `ProductsPage`
-
-## Макет
-
-Ориентир по вёрстке — макет из задания (Figma / выгрузка по ссылке из ТЗ заказчика).
